@@ -91,6 +91,52 @@ public final class Service {
     return builder.append("}\n").toString();
   }
 
+  public Builder builder() {
+    return new Builder()
+        .setName(name)
+        .setFqname(fqname)
+        .setDocumentation(documentation)
+        .setOptions(options)
+        .setMethods(methods);
+  }
+
+  public static final class Builder {
+    private String name;
+    private String fqname;
+    private String documentation;
+    private List<Option> options;
+    private List<Method> methods;
+
+    public Builder setName(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Builder setFqname(String fqname) {
+      this.fqname = fqname;
+      return this;
+    }
+
+    public Builder setDocumentation(String documentation) {
+      this.documentation = documentation;
+      return this;
+    }
+
+    public Builder setOptions(List<Option> options) {
+      this.options = options;
+      return this;
+    }
+
+    public Builder setMethods(List<Method> methods) {
+      this.methods = methods;
+      return this;
+    }
+
+    public Service build() {
+      return new Service(name, fqname, documentation, options, methods);
+    }
+  }
+
   public static final class Method {
     private final String name;
     private final String documentation;
@@ -171,6 +217,52 @@ public final class Service {
         builder.append("}");
       }
       return builder.append(";\n").toString();
+    }
+
+    public Builder builder() {
+      return new Builder()
+          .setName(name)
+          .setDocumentation(documentation)
+          .setRequestType(requestType)
+          .setResponseType(responseType)
+          .setOptions(options);
+    }
+
+    public static final class Builder {
+      private String name;
+      private String documentation;
+      private String requestType;
+      private String responseType;
+      private List<Option> options;
+
+      public Builder setName(String name) {
+        this.name = name;
+        return this;
+      }
+
+      public Builder setDocumentation(String documentation) {
+        this.documentation = documentation;
+        return this;
+      }
+
+      public Builder setRequestType(String requestType) {
+        this.requestType = requestType;
+        return this;
+      }
+
+      public Builder setResponseType(String responseType) {
+        this.responseType = responseType;
+        return this;
+      }
+
+      public Builder setOptions(List<Option> options) {
+        this.options = options;
+        return this;
+      }
+
+      public Method build() {
+        return new Method(name, documentation, requestType, responseType, options);
+      }
     }
   }
 }

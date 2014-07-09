@@ -11,7 +11,12 @@ import static org.fest.assertions.api.Assertions.fail;
 
 public class EnumTypeTest {
   @Test public void emptyToString() {
-    EnumType type = new EnumType("Enum", "", "", NO_OPTIONS, NO_VALUES);
+    EnumType type = new EnumType.Builder().setName("Enum")
+        .setFqname("")
+        .setDocumentation("")
+        .setOptions(NO_OPTIONS)
+        .setValues(NO_VALUES)
+        .build();
     String expected = "enum Enum {}\n";
     assertThat(type.toString()).isEqualTo(expected);
   }
@@ -20,7 +25,12 @@ public class EnumTypeTest {
     Value one = new Value("ONE", 1, "", NO_OPTIONS);
     Value two = new Value("TWO", 2, "", NO_OPTIONS);
     Value six = new Value("SIX", 6, "", NO_OPTIONS);
-    EnumType type = new EnumType("Enum", "", "", NO_OPTIONS, list(one, two, six));
+    EnumType type = new EnumType.Builder().setName("Enum")
+        .setFqname("")
+        .setDocumentation("")
+        .setOptions(NO_OPTIONS)
+        .setValues(list(one, two, six))
+        .build();
     String expected = ""
         + "enum Enum {\n"
         + "  ONE = 1;\n"
@@ -35,7 +45,12 @@ public class EnumTypeTest {
     Value two = new Value("TWO", 2, "", NO_OPTIONS);
     Value six = new Value("SIX", 6, "", NO_OPTIONS);
     Option kitKat = new Option("kit", "kat");
-    EnumType type = new EnumType("Enum", "", "", list(kitKat), list(one, two, six));
+    EnumType type = new EnumType.Builder().setName("Enum")
+        .setFqname("")
+        .setDocumentation("")
+        .setOptions(list(kitKat))
+        .setValues(list(one, two, six))
+        .build();
     String expected = ""
         + "enum Enum {\n"
         + "  option kit = \"kat\";\n"
@@ -51,7 +66,12 @@ public class EnumTypeTest {
     Value one = new Value("ONE", 1, "", NO_OPTIONS);
     Value two = new Value("TWO", 2, "", NO_OPTIONS);
     Value six = new Value("SIX", 6, "", NO_OPTIONS);
-    EnumType type = new EnumType("Enum", "", "Hello", NO_OPTIONS, list(one, two, six));
+    EnumType type = new EnumType.Builder().setName("Enum")
+        .setFqname("")
+        .setDocumentation("Hello")
+        .setOptions(NO_OPTIONS)
+        .setValues(list(one, two, six))
+        .build();
     String expected = ""
         + "// Hello\n"
         + "enum Enum {\n"
@@ -88,7 +108,12 @@ public class EnumTypeTest {
     Value value1 = new Value("VALUE1", 1, "", NO_OPTIONS);
     Value value2 = new Value("VALUE2", 1, "", NO_OPTIONS);
     try {
-      new EnumType("Enum1", "example.Enum", "", NO_OPTIONS, list(value1, value2));
+      new EnumType.Builder().setName("Enum1")
+          .setFqname("example.Enum")
+          .setDocumentation("")
+          .setOptions(NO_OPTIONS)
+          .setValues(list(value1, value2))
+          .build();
       fail("Duplicate tags not allowed.");
     } catch (IllegalStateException e) {
       assertThat(e).hasMessage("Duplicate tag 1 in example.Enum");
@@ -99,7 +124,12 @@ public class EnumTypeTest {
     Option option1 = new Option("allow_alias", true);
     Value value1 = new Value("VALUE1", 1, "", NO_OPTIONS);
     Value value2 = new Value("VALUE2", 1, "", NO_OPTIONS);
-    EnumType type = new EnumType("Enum1", "example.Enum", "", list(option1), list(value1, value2));
+    EnumType type = new EnumType.Builder().setName("Enum1")
+        .setFqname("example.Enum")
+        .setDocumentation("")
+        .setOptions(list(option1))
+        .setValues(list(value1, value2))
+        .build();
 
     String expected = ""
         + "enum Enum1 {\n"

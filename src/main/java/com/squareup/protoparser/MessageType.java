@@ -138,8 +138,68 @@ public final class MessageType implements Type {
     return builder.append("}\n").toString();
   }
 
+  public Builder builder() {
+    return new Builder()
+        .setName(name)
+        .setFqname(fqname)
+        .setDocumentation(documentation)
+        .setFields(fields)
+        .setNestedTypes(nestedTypes)
+        .setExtensions(extensions)
+        .setOptions(options);
+  }
+
   public enum Label {
     OPTIONAL, REQUIRED, REPEATED
+  }
+
+  public static final class Builder {
+    private String name;
+    private String fqname;
+    private String documentation;
+    private List<Field> fields;
+    private List<Type> nestedTypes;
+    private List<Extensions> extensions;
+    private List<Option> options;
+
+    public Builder setName(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Builder setFqname(String fqname) {
+      this.fqname = fqname;
+      return this;
+    }
+
+    public Builder setDocumentation(String documentation) {
+      this.documentation = documentation;
+      return this;
+    }
+
+    public Builder setFields(List<Field> fields) {
+      this.fields = fields;
+      return this;
+    }
+
+    public Builder setNestedTypes(List<Type> nestedTypes) {
+      this.nestedTypes = nestedTypes;
+      return this;
+    }
+
+    public Builder setExtensions(List<Extensions> extensions) {
+      this.extensions = extensions;
+      return this;
+    }
+
+    public Builder setOptions(List<Option> options) {
+      this.options = options;
+      return this;
+    }
+
+    public MessageType build() {
+      return new MessageType(name, fqname, documentation, fields, nestedTypes, extensions, options);
+    }
   }
 
   public static final class Field {
@@ -255,6 +315,59 @@ public final class MessageType implements Type {
         builder.append(']');
       }
       return builder.append(";\n").toString();
+    }
+
+    public Builder builder() {
+      return new Builder()
+          .setLabel(label)
+          .setType(type)
+          .setName(name)
+          .setTag(tag)
+          .setDocumentation(documentation)
+          .setOptions(options);
+    }
+
+    public static final class Builder {
+      private Label label;
+      private String type;
+      private String name;
+      private int tag;
+      private String documentation;
+      private List<Option> options;
+
+      public Builder setLabel(Label label) {
+        this.label = label;
+        return this;
+      }
+
+      public Builder setType(String type) {
+        this.type = type;
+        return this;
+      }
+
+      public Builder setName(String name) {
+        this.name = name;
+        return this;
+      }
+
+      public Builder setTag(int tag) {
+        this.tag = tag;
+        return this;
+      }
+
+      public Builder setDocumentation(String documentation) {
+        this.documentation = documentation;
+        return this;
+      }
+
+      public Builder setOptions(List<Option> options) {
+        this.options = options;
+        return this;
+      }
+
+      public Field build() {
+        return new Field(label, type, name, tag, documentation, options);
+      }
     }
   }
 }

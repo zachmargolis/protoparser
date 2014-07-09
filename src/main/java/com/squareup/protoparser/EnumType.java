@@ -150,6 +150,52 @@ public final class EnumType implements Type {
     return builder.append("}\n").toString();
   }
 
+  public Builder builder() {
+    return new Builder()
+        .setName(name)
+        .setFqname(fqname)
+        .setDocumentation(documentation)
+        .setOptions(options)
+        .setValues(values);
+  }
+
+  public static final class Builder {
+    private String name;
+    private String fqname;
+    private String documentation;
+    private List<Option> options;
+    private List<Value> values;
+
+    public Builder setName(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Builder setFqname(String fqname) {
+      this.fqname = fqname;
+      return this;
+    }
+
+    public Builder setDocumentation(String documentation) {
+      this.documentation = documentation;
+      return this;
+    }
+
+    public Builder setOptions(List<Option> options) {
+      this.options = options;
+      return this;
+    }
+
+    public Builder setValues(List<Value> values) {
+      this.values = values;
+      return this;
+    }
+
+    public EnumType build() {
+      return new EnumType(name, fqname, documentation, options, values);
+    }
+  }
+
   /** An enum constant. */
   public static final class Value {
     private final String name;

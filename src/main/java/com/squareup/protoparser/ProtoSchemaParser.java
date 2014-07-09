@@ -113,8 +113,15 @@ public final class ProtoSchemaParser {
     while (true) {
       String documentation = readDocumentation();
       if (pos == data.length) {
-        return new ProtoFile(fileName, packageName, dependencies, publicDependencies, types,
-            services, options, extendDeclarations);
+        return new ProtoFile.Builder().setFileName(fileName)
+            .setPackageName(packageName)
+            .setDependencies(dependencies)
+            .setPublicDependencies(publicDependencies)
+            .setTypes(types)
+            .setServices(services)
+            .setOptions(options)
+            .setExtendDeclarations(extendDeclarations)
+            .build();
       }
       Object declaration = readDeclaration(documentation, Context.FILE);
       if (declaration instanceof Type) {
@@ -232,8 +239,14 @@ public final class ProtoSchemaParser {
       }
     }
     prefix = previousPrefix;
-    return new MessageType(name, prefix + name, documentation, fields, nestedTypes, extensions,
-        options);
+    return new MessageType.Builder().setName(name)
+        .setFqname(prefix + name)
+        .setDocumentation(documentation)
+        .setFields(fields)
+        .setNestedTypes(nestedTypes)
+        .setExtensions(extensions)
+        .setOptions(options)
+        .build();
   }
 
   /** Reads an extend declaration. */
@@ -256,7 +269,11 @@ public final class ProtoSchemaParser {
     if (!name.contains(".") && packageName != null) {
       fqname = packageName + "." + name;
     }
-    return new ExtendDeclaration(name, fqname, documentation, fields);
+    return new ExtendDeclaration.Builder().setName(name)
+        .setFqname(fqname)
+        .setDocumentation(documentation)
+        .setFields(fields)
+        .build();
   }
 
   /** Reads a service declaration and returns it. */
@@ -278,7 +295,12 @@ public final class ProtoSchemaParser {
         options.add((Option) declared);
       }
     }
-    return new Service(name, prefix + name, documentation, options, methods);
+    return new Service.Builder().setName(name)
+        .setFqname(prefix + name)
+        .setDocumentation(documentation)
+        .setOptions(options)
+        .setMethods(methods)
+        .build();
   }
 
   /** Reads an enumerated type declaration and returns it. */
@@ -300,7 +322,12 @@ public final class ProtoSchemaParser {
         options.add((Option) declared);
       }
     }
-    return new EnumType(name, prefix + name, documentation, options, values);
+    return new EnumType.Builder().setName(name)
+        .setFqname(prefix + name)
+        .setDocumentation(documentation)
+        .setOptions(options)
+        .setValues(values)
+        .build();
   }
 
   /** Reads an field declaration and returns it. */
@@ -328,7 +355,13 @@ public final class ProtoSchemaParser {
       }
     }
     if (readChar() == ';') {
-      return new MessageType.Field(labelEnum, type, name, tag, documentation, options);
+      return new MessageType.Field.Builder().setLabel(labelEnum)
+          .setType(type)
+          .setName(name)
+          .setTag(tag)
+          .setDocumentation(documentation)
+          .setOptions(options)
+          .build();
     }
     throw unexpected("expected ';'");
   }
@@ -500,7 +533,12 @@ public final class ProtoSchemaParser {
       }
     } else if (readChar() != ';') throw unexpected("expected ';'");
 
-    return new Service.Method(name, documentation, requestType, responseType, options);
+    return new Service.Method.Builder().setName(name)
+        .setDocumentation(documentation)
+        .setRequestType(requestType)
+        .setResponseType(responseType)
+        .setOptions(options)
+        .build();
   }
 
   /** Reads a non-whitespace character and returns it. */

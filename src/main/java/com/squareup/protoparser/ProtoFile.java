@@ -152,4 +152,72 @@ public final class ProtoFile {
     }
     return builder.toString();
   }
+
+  public Builder builder() {
+    return new Builder()
+        .setFileName(fileName)
+        .setPackageName(packageName)
+        .setDependencies(dependencies)
+        .setPublicDependencies(publicDependencies)
+        .setTypes(types)
+        .setServices(services)
+        .setOptions(options)
+        .setExtendDeclarations(extendDeclarations);
+  }
+
+  public static final class Builder {
+    private String fileName;
+    private String packageName;
+    private List<String> dependencies;
+    private List<String> publicDependencies;
+    private List<Type> types;
+    private List<Service> services;
+    private List<Option> options;
+    private List<ExtendDeclaration> extendDeclarations;
+
+    public Builder setFileName(String fileName) {
+      this.fileName = fileName;
+      return this;
+    }
+
+    public Builder setPackageName(String packageName) {
+      this.packageName = packageName;
+      return this;
+    }
+
+    public Builder setDependencies(List<String> dependencies) {
+      this.dependencies = dependencies;
+      return this;
+    }
+
+    public Builder setPublicDependencies(List<String> publicDependencies) {
+      this.publicDependencies = publicDependencies;
+      return this;
+    }
+
+    public Builder setTypes(List<Type> types) {
+      this.types = types;
+      return this;
+    }
+
+    public Builder setServices(List<Service> services) {
+      this.services = services;
+      return this;
+    }
+
+    public Builder setOptions(List<Option> options) {
+      this.options = options;
+      return this;
+    }
+
+    public Builder setExtendDeclarations(List<ExtendDeclaration> extendDeclarations) {
+      this.extendDeclarations = extendDeclarations;
+      return this;
+    }
+
+    public ProtoFile build() {
+      return new ProtoFile(fileName, packageName, dependencies, publicDependencies, types, services,
+          options, extendDeclarations);
+    }
+  }
 }

@@ -10,14 +10,29 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ServiceTest {
   @Test public void emptyToString() {
-    Service service = new Service("Service", "", "", NO_OPTIONS, NO_METHODS);
+    Service service = new Service.Builder().setName("Service")
+        .setFqname("")
+        .setDocumentation("")
+        .setOptions(NO_OPTIONS)
+        .setMethods(NO_METHODS)
+        .build();
     String expected = "service Service {}\n";
     assertThat(service.toString()).isEqualTo(expected);
   }
 
   @Test public void singleToString() {
-    Method method = new Method("Name", "", "RequestType", "ResponseType", NO_OPTIONS);
-    Service service = new Service("Service", "", "", NO_OPTIONS, list(method));
+    Method method = new Method.Builder().setName("Name")
+        .setDocumentation("")
+        .setRequestType("RequestType")
+        .setResponseType("ResponseType")
+        .setOptions(NO_OPTIONS)
+        .build();
+    Service service = new Service.Builder().setName("Service")
+        .setFqname("")
+        .setDocumentation("")
+        .setOptions(NO_OPTIONS)
+        .setMethods(list(method))
+        .build();
     String expected = ""
         + "service Service {\n"
         + "  rpc Name (RequestType) returns (ResponseType);\n"
@@ -26,8 +41,18 @@ public class ServiceTest {
   }
 
   @Test public void singleWithOptionsToString() {
-    Method method = new Method("Name", "", "RequestType", "ResponseType", NO_OPTIONS);
-    Service service = new Service("Service", "", "", list(new Option("foo", "bar")), list(method));
+    Method method = new Method.Builder().setName("Name")
+        .setDocumentation("")
+        .setRequestType("RequestType")
+        .setResponseType("ResponseType")
+        .setOptions(NO_OPTIONS)
+        .build();
+    Service service = new Service.Builder().setName("Service")
+        .setFqname("")
+        .setDocumentation("")
+        .setOptions(list(new Option("foo", "bar")))
+        .setMethods(list(method))
+        .build();
     String expected = ""
         + "service Service {\n"
         + "  option foo = \"bar\";\n"
@@ -38,8 +63,18 @@ public class ServiceTest {
   }
 
   @Test public void singleWithDocumentation() {
-    Method method = new Method("Name", "", "RequestType", "ResponseType", NO_OPTIONS);
-    Service service = new Service("Service", "", "Hello", NO_OPTIONS, list(method));
+    Method method = new Method.Builder().setName("Name")
+        .setDocumentation("")
+        .setRequestType("RequestType")
+        .setResponseType("ResponseType")
+        .setOptions(NO_OPTIONS)
+        .build();
+    Service service = new Service.Builder().setName("Service")
+        .setFqname("")
+        .setDocumentation("Hello")
+        .setOptions(NO_OPTIONS)
+        .setMethods(list(method))
+        .build();
     String expected = ""
         + "// Hello\n"
         + "service Service {\n"
@@ -49,8 +84,18 @@ public class ServiceTest {
   }
 
   @Test public void multipleToString() {
-    Method method = new Method("Name", "", "RequestType", "ResponseType", NO_OPTIONS);
-    Service service = new Service("Service", "", "", NO_OPTIONS, list(method, method));
+    Method method = new Method.Builder().setName("Name")
+        .setDocumentation("")
+        .setRequestType("RequestType")
+        .setResponseType("ResponseType")
+        .setOptions(NO_OPTIONS)
+        .build();
+    Service service = new Service.Builder().setName("Service")
+        .setFqname("")
+        .setDocumentation("")
+        .setOptions(NO_OPTIONS)
+        .setMethods(list(method, method))
+        .build();
     String expected = ""
         + "service Service {\n"
         + "  rpc Name (RequestType) returns (ResponseType);\n"
@@ -60,13 +105,23 @@ public class ServiceTest {
   }
 
   @Test public void methodToString() {
-    Method method = new Method("Name", "", "RequestType", "ResponseType", NO_OPTIONS);
+    Method method = new Method.Builder().setName("Name")
+        .setDocumentation("")
+        .setRequestType("RequestType")
+        .setResponseType("ResponseType")
+        .setOptions(NO_OPTIONS)
+        .build();
     String expected = "rpc Name (RequestType) returns (ResponseType);\n";
     assertThat(method.toString()).isEqualTo(expected);
   }
 
   @Test public void methodWithDocumentationToString() {
-    Method method = new Method("Name", "Hello", "RequestType", "ResponseType", NO_OPTIONS);
+    Method method = new Method.Builder().setName("Name")
+        .setDocumentation("Hello")
+        .setRequestType("RequestType")
+        .setResponseType("ResponseType")
+        .setOptions(NO_OPTIONS)
+        .build();
     String expected = ""
         + "// Hello\n"
         + "rpc Name (RequestType) returns (ResponseType);\n";
@@ -75,7 +130,12 @@ public class ServiceTest {
 
   @Test public void methodWithOptions() {
     Method method =
-        new Method("Name", "", "RequestType", "ResponseType", list(new Option("foo", "bar")));
+        new Method.Builder().setName("Name")
+            .setDocumentation("")
+            .setRequestType("RequestType")
+            .setResponseType("ResponseType")
+            .setOptions(list(new Option("foo", "bar")))
+            .build();
     String expected = ""
         + "rpc Name (RequestType) returns (ResponseType) {\n"
         + "  option foo = \"bar\";\n"

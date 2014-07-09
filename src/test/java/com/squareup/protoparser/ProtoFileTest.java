@@ -29,16 +29,30 @@ public class ProtoFileTest {
 
   @Test public void emptyToString() {
     ProtoFile file =
-        new ProtoFile("file.proto", null, NO_STRINGS, NO_STRINGS, NO_TYPES, NO_SERVICES, NO_OPTIONS,
-            NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("file.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(NO_TYPES)
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     String expected = "// file.proto\n";
     assertThat(file.toString()).isEqualTo(expected);
   }
 
   @Test public void emptyWithPackageToString() {
     ProtoFile file =
-        new ProtoFile("file.proto", "example.simple", NO_STRINGS, NO_STRINGS, NO_TYPES, NO_SERVICES, NO_OPTIONS,
-            NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("file.proto")
+            .setPackageName("example.simple")
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(NO_TYPES)
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     String expected = ""
         + "// file.proto\n"
         + "package example.simple;\n";
@@ -46,10 +60,24 @@ public class ProtoFileTest {
   }
 
   @Test public void simpleToString() {
-    Type type = new MessageType("Message", "", "", NO_FIELDS, NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+    Type type = new MessageType.Builder().setName("Message")
+        .setFqname("")
+        .setDocumentation("")
+        .setFields(NO_FIELDS)
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile file =
-        new ProtoFile("file.proto", null, NO_STRINGS, NO_STRINGS, list(type),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("file.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(list(type))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     String expected = ""
         + "// file.proto\n"
         + "\n"
@@ -58,10 +86,24 @@ public class ProtoFileTest {
   }
 
   @Test public void simpleWithImportsToString() {
-    Type type = new MessageType("Message", "", "", NO_FIELDS, NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+    Type type = new MessageType.Builder().setName("Message")
+        .setFqname("")
+        .setDocumentation("")
+        .setFields(NO_FIELDS)
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile file =
-        new ProtoFile("file.proto", null, list("example.other"), NO_STRINGS, list(type),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("file.proto")
+            .setPackageName(null)
+            .setDependencies(list("example.other"))
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(list(type))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     String expected = ""
         + "// file.proto\n"
         + "\n"
@@ -72,10 +114,24 @@ public class ProtoFileTest {
   }
 
   @Test public void simpleWithPublicImportsToString() {
-    Type type = new MessageType("Message", "", "", NO_FIELDS, NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+    Type type = new MessageType.Builder().setName("Message")
+        .setFqname("")
+        .setDocumentation("")
+        .setFields(NO_FIELDS)
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile file =
-        new ProtoFile("file.proto", null, NO_STRINGS, list("example.other"), list(type),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("file.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(list("example.other"))
+            .setTypes(list(type))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     String expected = ""
         + "// file.proto\n"
         + "\n"
@@ -86,10 +142,24 @@ public class ProtoFileTest {
   }
 
   @Test public void simpleWithBothImportsToString() {
-    Type type = new MessageType("Message", "", "", NO_FIELDS, NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+    Type type = new MessageType.Builder().setName("Message")
+        .setFqname("")
+        .setDocumentation("")
+        .setFields(NO_FIELDS)
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile file =
-        new ProtoFile("file.proto", null, list("example.thing"), list("example.other"),
-            list(type), NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("file.proto")
+            .setPackageName(null)
+            .setDependencies(list("example.thing"))
+            .setPublicDependencies(list("example.other"))
+            .setTypes(list(type))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     String expected = ""
         + "// file.proto\n"
         + "\n"
@@ -101,11 +171,30 @@ public class ProtoFileTest {
   }
 
   @Test public void simpleWithServicesToString() {
-    Type type = new MessageType("Message", "", "", NO_FIELDS, NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
-    Service service = new Service("Service", "", "", NO_OPTIONS, NO_METHODS);
+    Type type = new MessageType.Builder().setName("Message")
+        .setFqname("")
+        .setDocumentation("")
+        .setFields(NO_FIELDS)
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
+    Service service = new Service.Builder().setName("Service")
+        .setFqname("")
+        .setDocumentation("")
+        .setOptions(NO_OPTIONS)
+        .setMethods(NO_METHODS)
+        .build();
     ProtoFile file =
-        new ProtoFile("file.proto", null, NO_STRINGS, NO_STRINGS, list(type),
-            list(service), NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("file.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(list(type))
+            .setServices(list(service))
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     String expected = ""
         + "// file.proto\n"
         + "\n"
@@ -116,11 +205,25 @@ public class ProtoFileTest {
   }
 
   @Test public void simpleWithOptionsToString() {
-    Type type = new MessageType("Message", "", "", NO_FIELDS, NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+    Type type = new MessageType.Builder().setName("Message")
+        .setFqname("")
+        .setDocumentation("")
+        .setFields(NO_FIELDS)
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     Option option = new Option("kit", "kat");
     ProtoFile file =
-        new ProtoFile("file.proto", null, NO_STRINGS, NO_STRINGS, list(type),
-            NO_SERVICES, list(option), NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("file.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(list(type))
+            .setServices(NO_SERVICES)
+            .setOptions(list(option))
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     String expected = ""
         + "// file.proto\n"
         + "\n"
@@ -131,11 +234,29 @@ public class ProtoFileTest {
   }
 
   @Test public void simpleWithExtendsToString() {
-    Type type = new MessageType("Message", "", "", NO_FIELDS, NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
-    ExtendDeclaration extend = new ExtendDeclaration("Extend", "Extend", "", NO_FIELDS);
+    Type type = new MessageType.Builder().setName("Message")
+        .setFqname("")
+        .setDocumentation("")
+        .setFields(NO_FIELDS)
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
+    ExtendDeclaration extend = new ExtendDeclaration.Builder().setName("Extend")
+        .setFqname("Extend")
+        .setDocumentation("")
+        .setFields(NO_FIELDS)
+        .build();
     ProtoFile file =
-        new ProtoFile("file.proto", null, NO_STRINGS, NO_STRINGS, list(type),
-            NO_SERVICES, NO_OPTIONS, list(extend));
+        new ProtoFile.Builder().setFileName("file.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(list(type))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(list(extend))
+            .build();
     String expected = ""
         + "// file.proto\n"
         + "\n"
@@ -146,24 +267,60 @@ public class ProtoFileTest {
   }
 
   @Test public void multipleEverythingToString() {
-    Type type1 = new MessageType("Message1", "example.simple.Message1", "", NO_FIELDS, NO_TYPES,
-        NO_EXTENSIONS, NO_OPTIONS);
-    Type type2 = new MessageType("Message2", "example.simple.Message2", "", NO_FIELDS, NO_TYPES,
-        NO_EXTENSIONS, NO_OPTIONS);
+    Type type1 = new MessageType.Builder().setName("Message1")
+        .setFqname("example.simple.Message1")
+        .setDocumentation("")
+        .setFields(NO_FIELDS)
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
+    Type type2 = new MessageType.Builder().setName("Message2")
+        .setFqname("example.simple.Message2")
+        .setDocumentation("")
+        .setFields(NO_FIELDS)
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ExtendDeclaration extend1 =
-        new ExtendDeclaration("Extend1", "example.simple.Extend1", "", NO_FIELDS);
+        new ExtendDeclaration.Builder().setName("Extend1")
+            .setFqname("example.simple.Extend1")
+            .setDocumentation("")
+            .setFields(NO_FIELDS)
+            .build();
     ExtendDeclaration extend2 =
-        new ExtendDeclaration("Extend2", "example.simple.Extend2", "", NO_FIELDS);
+        new ExtendDeclaration.Builder().setName("Extend2")
+            .setFqname("example.simple.Extend2")
+            .setDocumentation("")
+            .setFields(NO_FIELDS)
+            .build();
     Option option1 = new Option("kit", "kat");
     Option option2 = new Option("foo", "bar");
     Service service1 =
-        new Service("Service1", "example.simple.Service1", "", NO_OPTIONS, NO_METHODS);
+        new Service.Builder().setName("Service1")
+            .setFqname("example.simple.Service1")
+            .setDocumentation("")
+            .setOptions(NO_OPTIONS)
+            .setMethods(NO_METHODS)
+            .build();
     Service service2 =
-        new Service("Service2", "example.simple.Service2", "", NO_OPTIONS, NO_METHODS);
+        new Service.Builder().setName("Service2")
+            .setFqname("example.simple.Service2")
+            .setDocumentation("")
+            .setOptions(NO_OPTIONS)
+            .setMethods(NO_METHODS)
+            .build();
     ProtoFile file =
-        new ProtoFile("file.proto", "example.simple", list("example.thing"), list("example.other"),
-            list(type1, type2), list(service1, service2), list(option1, option2),
-            list(extend1, extend2));
+        new ProtoFile.Builder().setFileName("file.proto")
+            .setPackageName("example.simple")
+            .setDependencies(list("example.thing"))
+            .setPublicDependencies(list("example.other"))
+            .setTypes(list(type1, type2))
+            .setServices(list(service1, service2))
+            .setOptions(list(option1, option2))
+            .setExtendDeclarations(list(extend1, extend2))
+            .build();
     String expected = ""
         + "// file.proto\n"
         + "package example.simple;\n"

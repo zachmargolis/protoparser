@@ -73,4 +73,43 @@ public final class ExtendDeclaration {
     }
     return builder.append("}\n").toString();
   }
+
+  public Builder builder() {
+    return new Builder()
+        .setName(name)
+        .setFqname(fqname)
+        .setDocumentation(documentation)
+        .setFields(fields);
+  }
+
+  public static final class Builder {
+    private String name;
+    private String fqname;
+    private String documentation;
+    private List<Field> fields;
+
+    public Builder setName(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Builder setFqname(String fqname) {
+      this.fqname = fqname;
+      return this;
+    }
+
+    public Builder setDocumentation(String documentation) {
+      this.documentation = documentation;
+      return this;
+    }
+
+    public Builder setFields(List<Field> fields) {
+      this.fields = fields;
+      return this;
+    }
+
+    public ExtendDeclaration build() {
+      return new ExtendDeclaration(name, fqname, documentation, fields);
+    }
+  }
 }

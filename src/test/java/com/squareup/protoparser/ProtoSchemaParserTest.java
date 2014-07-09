@@ -25,8 +25,13 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public final class ProtoSchemaParserTest {
   @Test public void field() throws Exception {
-    MessageType.Field field = new MessageType.Field(Label.OPTIONAL, "CType", "ctype", 1, "",
-        list(new Option("default", "STRING"), new Option("deprecated", "true")));
+    MessageType.Field field = new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+        .setType("CType")
+        .setName("ctype")
+        .setTag(1)
+        .setDocumentation("")
+        .setOptions(list(new Option("default", "STRING"), new Option("deprecated", "true")))
+        .build();
     assertThat(field.isDeprecated()).isTrue();
     assertThat(field.getDefault()).isEqualTo("STRING");
     assertThat(field.getOptions()).containsOnly( //
@@ -140,14 +145,45 @@ public final class ProtoSchemaParserTest {
         + "  optional int32 page_number = 2;\n"
         + "  optional int32 result_per_page = 3;\n"
         + "}";
-    Type expected = new MessageType("SearchRequest", "SearchRequest", "",
-        Arrays.asList(new MessageType.Field(Label.REQUIRED, "string", "query", 1, "", NO_OPTIONS),
-            new MessageType.Field(Label.OPTIONAL, "int32", "page_number", 2, "", NO_OPTIONS),
-            new MessageType.Field(Label.OPTIONAL, "int32", "result_per_page", 3, "", NO_OPTIONS)),
-        NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+    Type expected = new MessageType.Builder().setName("SearchRequest")
+        .setFqname("SearchRequest")
+        .setDocumentation("")
+        .setFields(Arrays.asList(
+            new MessageType.Field.Builder().setLabel(Label.REQUIRED)
+                .setType("string")
+                .setName("query")
+                .setTag(1)
+                .setDocumentation("")
+                .setOptions(NO_OPTIONS)
+                .build(),
+            new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+                .setType("int32")
+                .setName("page_number")
+                .setTag(2)
+                .setDocumentation("")
+                .setOptions(NO_OPTIONS)
+                .build(),
+            new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+                .setType("int32")
+                .setName("result_per_page")
+                .setTag(3)
+                .setDocumentation("")
+                .setOptions(NO_OPTIONS)
+                .build()))
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile protoFile =
-        new ProtoFile("search.proto", null, NO_STRINGS, NO_STRINGS, Arrays.asList(expected),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("search.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(expected))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     assertThat(ProtoSchemaParser.parse("search.proto", new StringReader(proto))).isEqualTo(protoFile);
   }
 
@@ -165,13 +201,24 @@ public final class ProtoSchemaParserTest {
         + "  // Quebec Maple syrup\n"
         + "  SYRUP = 3;\n"
         + "}\n";
-    Type expected = new EnumType("Topping", "Topping",
-       "What's on my waffles.\nAlso works on pancakes.", NO_OPTIONS,
-        Arrays.asList(new Value("FRUIT", 1, "", NO_OPTIONS), new Value("CREAM", 2, "Yummy, yummy cream.",
-            NO_OPTIONS), new Value("SYRUP", 3, "Quebec Maple syrup", NO_OPTIONS)));
+    Type expected = new EnumType.Builder().setName("Topping")
+        .setFqname("Topping")
+        .setDocumentation("What's on my waffles.\nAlso works on pancakes.")
+        .setOptions(NO_OPTIONS)
+        .setValues(Arrays.asList(new Value("FRUIT", 1, "", NO_OPTIONS),
+            new Value("CREAM", 2, "Yummy, yummy cream.",
+                NO_OPTIONS), new Value("SYRUP", 3, "Quebec Maple syrup", NO_OPTIONS)))
+        .build();
     ProtoFile protoFile =
-        new ProtoFile("waffles.proto", null, NO_STRINGS, NO_STRINGS, Arrays.asList(expected),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("waffles.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(expected))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     ProtoFile actual = ProtoSchemaParser.parse("waffles.proto", proto);
     assertThat(actual).isEqualTo(protoFile);
   }
@@ -194,14 +241,24 @@ public final class ProtoSchemaParserTest {
         + "}\n";
     List<Option> fruitOptions = list(new Option("healthy", "true"));
     List<Option> toppingOptions = list(new Option("max_choices", "2"));
-    Type expected = new EnumType("Topping", "Topping",
-        "What's on my waffles.\nAlso works on pancakes.", toppingOptions,
-        list(new Value("FRUIT", 1, "", fruitOptions),
+    Type expected = new EnumType.Builder().setName("Topping")
+        .setFqname("Topping")
+        .setDocumentation("What's on my waffles.\nAlso works on pancakes.")
+        .setOptions(toppingOptions)
+        .setValues(list(new Value("FRUIT", 1, "", fruitOptions),
             new Value("CREAM", 2, "Yummy, yummy cream.", NO_OPTIONS),
-            new Value("SYRUP", 3, "Quebec Maple syrup", NO_OPTIONS)));
+            new Value("SYRUP", 3, "Quebec Maple syrup", NO_OPTIONS)))
+        .build();
     ProtoFile protoFile =
-        new ProtoFile("waffles.proto", null, NO_STRINGS, NO_STRINGS, Arrays.asList(expected),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("waffles.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(expected))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     ProtoFile actual = ProtoSchemaParser.parse("waffles.proto", proto);
     assertThat(actual).isEqualTo(protoFile);
   }
@@ -215,14 +272,26 @@ public final class ProtoSchemaParserTest {
         + "// files it parses.\n"
         + "message FileDescriptorSet {\n"
         + "}\n";
-    Type message = new MessageType("FileDescriptorSet", "google.protobuf.FileDescriptorSet", ""
-        + "The protocol compiler can output a FileDescriptorSet containing the .proto\n"
-        + "files it parses.", Arrays.<MessageType.Field>asList(), NO_TYPES, NO_EXTENSIONS,
-        NO_OPTIONS);
+    Type message = new MessageType.Builder().setName("FileDescriptorSet")
+        .setFqname("google.protobuf.FileDescriptorSet")
+        .setDocumentation(""
+            + "The protocol compiler can output a FileDescriptorSet containing the .proto\n"
+            + "files it parses.")
+        .setFields(Arrays.<MessageType.Field>asList())
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile expected =
-        new ProtoFile("descriptor.proto", "google.protobuf", NO_STRINGS, NO_STRINGS,
-            Arrays.asList(message), NO_SERVICES,
-            list(new Option("java_package", "com.google.protobuf")), NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("descriptor.proto")
+            .setPackageName("google.protobuf")
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(message))
+            .setServices(NO_SERVICES)
+            .setOptions(list(new Option("java_package", "com.google.protobuf")))
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     assertThat(ProtoSchemaParser.parse("descriptor.proto", proto))
         .isEqualTo(expected);
   }
@@ -238,40 +307,75 @@ public final class ProtoSchemaParserTest {
         + "  extensions 500;\n"
         + "  extensions 1000 to max;\n"
         + "}\n";
-    Type enumType = new EnumType("CType", "FieldOptions.CType", "", NO_OPTIONS,
-        Arrays.asList(new Value("STRING", 0, "",
-            Arrays.asList(new Option("opt_a", "1"), new Option("opt_b", "2")))));
-    MessageType.Field field = new MessageType.Field(Label.OPTIONAL, "CType", "ctype", 1, "",
-        list(new Option("default", "STRING"), new Option("deprecated", "true")));
+    Type enumType = new EnumType.Builder().setName("CType")
+        .setFqname("FieldOptions.CType")
+        .setDocumentation("")
+        .setOptions(NO_OPTIONS)
+        .setValues(Arrays.asList(new Value("STRING", 0, "",
+            Arrays.asList(new Option("opt_a", "1"), new Option("opt_b", "2")))))
+        .build();
+    MessageType.Field field = new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+        .setType("CType")
+        .setName("ctype")
+        .setTag(1)
+        .setDocumentation("")
+        .setOptions(list(new Option("default", "STRING"), new Option("deprecated", "true")))
+        .build();
     assertThat(field.getOptions()).containsOnly( //
         new Option("default", "STRING"), //
         new Option("deprecated", "true"));
 
-    Type messageType = new MessageType("FieldOptions", "FieldOptions", "", Arrays.asList(field),
-        Arrays.asList(enumType), list(new Extensions(
-        "Clients can define custom options in extensions of this message. See above.", 500, 500),
-        new Extensions("", 1000, ProtoFile.MAX_TAG_VALUE)), NO_OPTIONS);
+    Type messageType = new MessageType.Builder().setName("FieldOptions")
+        .setFqname("FieldOptions")
+        .setDocumentation("")
+        .setFields(Arrays.asList(field))
+        .setNestedTypes(Arrays.asList(enumType))
+        .setExtensions(list(new Extensions(
+            "Clients can define custom options in extensions of this message. See above.", 500,
+            500),
+            new Extensions("", 1000, ProtoFile.MAX_TAG_VALUE)))
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile expected =
-        new ProtoFile("descriptor.proto", null, NO_STRINGS, NO_STRINGS, Arrays.asList(messageType),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("descriptor.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(messageType))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     ProtoFile actual = ProtoSchemaParser.parse("descriptor.proto", proto);
     assertThat(actual).isEqualTo(expected);
   }
 
   @Test public void imports() throws Exception {
     String proto = "import \"src/test/resources/unittest_import.proto\";\n";
-    ProtoFile expected = new ProtoFile("descriptor.proto", null,
-        Arrays.asList("src/test/resources/unittest_import.proto"), NO_STRINGS, NO_TYPES,
-        NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+    ProtoFile expected = new ProtoFile.Builder().setFileName("descriptor.proto")
+        .setPackageName(null)
+        .setDependencies(Arrays.asList("src/test/resources/unittest_import.proto"))
+        .setPublicDependencies(NO_STRINGS)
+        .setTypes(NO_TYPES)
+        .setServices(NO_SERVICES)
+        .setOptions(NO_OPTIONS)
+        .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+        .build();
     assertThat(ProtoSchemaParser.parse("descriptor.proto", proto))
         .isEqualTo(expected);
   }
 
   @Test public void publicImports() throws Exception {
     String proto = "import public \"src/test/resources/unittest_import.proto\";\n";
-    ProtoFile expected = new ProtoFile("descriptor.proto", null,
-        NO_STRINGS, Arrays.asList("src/test/resources/unittest_import.proto"), NO_TYPES,
-        NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+    ProtoFile expected = new ProtoFile.Builder().setFileName("descriptor.proto")
+        .setPackageName(null)
+        .setDependencies(NO_STRINGS)
+        .setPublicDependencies(Arrays.asList("src/test/resources/unittest_import.proto"))
+        .setTypes(NO_TYPES)
+        .setServices(NO_SERVICES)
+        .setOptions(NO_OPTIONS)
+        .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+        .build();
     assertThat(ProtoSchemaParser.parse("descriptor.proto", proto))
         .isEqualTo(expected);
   }
@@ -283,11 +387,27 @@ public final class ProtoSchemaParserTest {
         + "  optional int32 bar = 126;\n"
         + "}";
     List<ExtendDeclaration> extendDeclarations = new ArrayList<ExtendDeclaration>();
-    extendDeclarations.add(new ExtendDeclaration("Foo", "Foo", "Extends Foo",
-        Arrays.asList(new MessageType.Field(Label.OPTIONAL, "int32", "bar", 126, "", NO_OPTIONS))));
+    extendDeclarations.add(new ExtendDeclaration.Builder().setName("Foo")
+        .setFqname("Foo")
+        .setDocumentation("Extends Foo")
+        .setFields(Arrays.asList(new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+            .setType("int32")
+            .setName("bar")
+            .setTag(126)
+            .setDocumentation("")
+            .setOptions(NO_OPTIONS)
+            .build()))
+        .build());
     ProtoFile expected =
-        new ProtoFile("descriptor.proto", null, NO_STRINGS, NO_STRINGS, NO_TYPES, NO_SERVICES,
-            NO_OPTIONS, extendDeclarations);
+        new ProtoFile.Builder().setFileName("descriptor.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(NO_TYPES)
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(extendDeclarations)
+            .build();
     assertThat(ProtoSchemaParser.parse("descriptor.proto", proto))
         .isEqualTo(expected);
   }
@@ -300,13 +420,36 @@ public final class ProtoSchemaParserTest {
         + "  }\n"
         + "}";
     List<ExtendDeclaration> extendDeclarations = new ArrayList<ExtendDeclaration>();
-    extendDeclarations.add(new ExtendDeclaration("Foo", "Foo", "",
-        Arrays.asList(new MessageType.Field(Label.OPTIONAL, "Bar", "bar", 126, "", NO_OPTIONS))));
+    extendDeclarations.add(new ExtendDeclaration.Builder().setName("Foo")
+        .setFqname("Foo")
+        .setDocumentation("")
+        .setFields(Arrays.asList(new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+            .setType("Bar")
+            .setName("bar")
+            .setTag(126)
+            .setDocumentation("")
+            .setOptions(NO_OPTIONS)
+            .build()))
+        .build());
     Type messageType =
-        new MessageType("Bar", "Bar", "", NO_FIELDS, NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+        new MessageType.Builder().setName("Bar")
+            .setFqname("Bar")
+            .setDocumentation("")
+            .setFields(NO_FIELDS)
+            .setNestedTypes(NO_TYPES)
+            .setExtensions(NO_EXTENSIONS)
+            .setOptions(NO_OPTIONS)
+            .build();
     ProtoFile expected =
-        new ProtoFile("descriptor.proto", null, NO_STRINGS, NO_STRINGS, Arrays.asList(messageType),
-            NO_SERVICES, NO_OPTIONS, extendDeclarations);
+        new ProtoFile.Builder().setFileName("descriptor.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(messageType))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(extendDeclarations)
+            .build();
     assertThat(ProtoSchemaParser.parse("descriptor.proto", proto))
         .isEqualTo(expected);
   }
@@ -321,13 +464,36 @@ public final class ProtoSchemaParserTest {
         + "  }\n"
         + "}";
     List<ExtendDeclaration> extendDeclarations = new ArrayList<ExtendDeclaration>();
-    extendDeclarations.add(new ExtendDeclaration("Foo", "kit.kat.Foo", "",
-        Arrays.asList(new MessageType.Field(Label.OPTIONAL, "Bar", "bar", 126, "", NO_OPTIONS))));
+    extendDeclarations.add(new ExtendDeclaration.Builder().setName("Foo")
+        .setFqname("kit.kat.Foo")
+        .setDocumentation("")
+        .setFields(Arrays.asList(new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+            .setType("Bar")
+            .setName("bar")
+            .setTag(126)
+            .setDocumentation("")
+            .setOptions(NO_OPTIONS)
+            .build()))
+        .build());
     Type messageType =
-        new MessageType("Bar", "kit.kat.Bar", "", NO_FIELDS, NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+        new MessageType.Builder().setName("Bar")
+            .setFqname("kit.kat.Bar")
+            .setDocumentation("")
+            .setFields(NO_FIELDS)
+            .setNestedTypes(NO_TYPES)
+            .setExtensions(NO_EXTENSIONS)
+            .setOptions(NO_OPTIONS)
+            .build();
     ProtoFile expected =
-        new ProtoFile("descriptor.proto", "kit.kat", NO_STRINGS, NO_STRINGS,
-            Arrays.asList(messageType), NO_SERVICES, NO_OPTIONS, extendDeclarations);
+        new ProtoFile.Builder().setFileName("descriptor.proto")
+            .setPackageName("kit.kat")
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(messageType))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(extendDeclarations)
+            .build();
     assertThat(ProtoSchemaParser.parse("descriptor.proto", proto))
         .isEqualTo(expected);
   }
@@ -340,13 +506,36 @@ public final class ProtoSchemaParserTest {
         + "  }\n"
         + "}";
     List<ExtendDeclaration> extendDeclarations = new ArrayList<ExtendDeclaration>();
-    extendDeclarations.add(new ExtendDeclaration("example.Foo", "example.Foo", "",
-        Arrays.asList(new MessageType.Field(Label.OPTIONAL, "Bar", "bar", 126, "", NO_OPTIONS))));
+    extendDeclarations.add(new ExtendDeclaration.Builder().setName("example.Foo")
+        .setFqname("example.Foo")
+        .setDocumentation("")
+        .setFields(Arrays.asList(new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+            .setType("Bar")
+            .setName("bar")
+            .setTag(126)
+            .setDocumentation("")
+            .setOptions(NO_OPTIONS)
+            .build()))
+        .build());
     Type messageType =
-        new MessageType("Bar", "Bar", "", NO_FIELDS, NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+        new MessageType.Builder().setName("Bar")
+            .setFqname("Bar")
+            .setDocumentation("")
+            .setFields(NO_FIELDS)
+            .setNestedTypes(NO_TYPES)
+            .setExtensions(NO_EXTENSIONS)
+            .setOptions(NO_OPTIONS)
+            .build();
     ProtoFile expected =
-        new ProtoFile("descriptor.proto", null, NO_STRINGS, NO_STRINGS, Arrays.asList(messageType),
-            NO_SERVICES, NO_OPTIONS, extendDeclarations);
+        new ProtoFile.Builder().setFileName("descriptor.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(messageType))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(extendDeclarations)
+            .build();
     assertThat(ProtoSchemaParser.parse("descriptor.proto", proto))
         .isEqualTo(expected);
   }
@@ -361,13 +550,36 @@ public final class ProtoSchemaParserTest {
         + "  }\n"
         + "}";
     List<ExtendDeclaration> extendDeclarations = new ArrayList<ExtendDeclaration>();
-    extendDeclarations.add(new ExtendDeclaration("example.Foo", "example.Foo", "",
-        Arrays.asList(new MessageType.Field(Label.OPTIONAL, "Bar", "bar", 126, "", NO_OPTIONS))));
+    extendDeclarations.add(new ExtendDeclaration.Builder().setName("example.Foo")
+        .setFqname("example.Foo")
+        .setDocumentation("")
+        .setFields(Arrays.asList(new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+            .setType("Bar")
+            .setName("bar")
+            .setTag(126)
+            .setDocumentation("")
+            .setOptions(NO_OPTIONS)
+            .build()))
+        .build());
     Type messageType =
-        new MessageType("Bar", "kit.kat.Bar", "", NO_FIELDS, NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+        new MessageType.Builder().setName("Bar")
+            .setFqname("kit.kat.Bar")
+            .setDocumentation("")
+            .setFields(NO_FIELDS)
+            .setNestedTypes(NO_TYPES)
+            .setExtensions(NO_EXTENSIONS)
+            .setOptions(NO_OPTIONS)
+            .build();
     ProtoFile expected =
-        new ProtoFile("descriptor.proto", "kit.kat", NO_STRINGS, NO_STRINGS,
-            Arrays.asList(messageType), NO_SERVICES, NO_OPTIONS, extendDeclarations);
+        new ProtoFile.Builder().setFileName("descriptor.proto")
+            .setPackageName("kit.kat")
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(messageType))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(extendDeclarations)
+            .build();
     assertThat(ProtoSchemaParser.parse("descriptor.proto", proto))
         .isEqualTo(expected);
   }
@@ -377,14 +589,32 @@ public final class ProtoSchemaParserTest {
         + "message Foo {\n"
         + "  optional string claim_token = 2 [(squareup.redacted) = true];\n"
         + "}";
-    MessageType.Field field = new MessageType.Field(Label.OPTIONAL, "string", "claim_token", 2, "",
-        list(new Option("squareup.redacted", "true")));
+    MessageType.Field field = new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+        .setType("string")
+        .setName("claim_token")
+        .setTag(2)
+        .setDocumentation("")
+        .setOptions(list(new Option("squareup.redacted", "true")))
+        .build();
     assertThat(field.getOptions()).containsOnly(new Option("squareup.redacted", "true"));
 
-    Type messageType = new MessageType("Foo", "Foo", "", Arrays.asList(field), NO_TYPES,
-        NO_EXTENSIONS, NO_OPTIONS);
-    ProtoFile expected = new ProtoFile("descriptor.proto", null, NO_STRINGS, NO_STRINGS,
-        Arrays.<Type>asList(messageType), NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+    Type messageType = new MessageType.Builder().setName("Foo")
+        .setFqname("Foo")
+        .setDocumentation("")
+        .setFields(Arrays.asList(field))
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
+    ProtoFile expected = new ProtoFile.Builder().setFileName("descriptor.proto")
+        .setPackageName(null)
+        .setDependencies(NO_STRINGS)
+        .setPublicDependencies(NO_STRINGS)
+        .setTypes(Arrays.<Type>asList(messageType))
+        .setServices(NO_SERVICES)
+        .setOptions(NO_OPTIONS)
+        .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+        .build();
     assertThat(ProtoSchemaParser.parse("descriptor.proto", proto))
         .isEqualTo(expected);
   }
@@ -396,17 +626,36 @@ public final class ProtoSchemaParserTest {
         + "  optional string name = 1 "
         + "[default = \"\\a\\b\\f\\n\\r\\t\\v\1f\01\001\11\011\111\\xe\\Xe\\xE\\xE\\x41\\X41\"];\n"
         + "}";
-    MessageType.Field field = new MessageType.Field(Label.OPTIONAL, "string", "name", 1, "", list(
-        new Option("default",
-            "\u0007\b\f\n\r\t\u000b\u0001f\u0001\u0001\u0009\u0009I\u000e\u000e\u000e\u000eAA")));
+    MessageType.Field field = new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+        .setType("string")
+        .setName("name")
+        .setTag(1)
+        .setDocumentation("")
+        .setOptions(list(
+            new Option("default",
+                "\u0007\b\f\n\r\t\u000b\u0001f\u0001\u0001\u0009\u0009I\u000e\u000e\u000e\u000eAA")))
+        .build();
     assertThat(field.getOptions()).containsOnly(new Option("default",
         "\u0007\b\f\n\r\t\u000b\u0001f\u0001\u0001\u0009\u0009I\u000e\u000e\u000e\u000eAA"));
 
-    Type messageType = new MessageType("Foo", "Foo", "", Arrays.asList(field),
-            NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+    Type messageType = new MessageType.Builder().setName("Foo")
+        .setFqname("Foo")
+        .setDocumentation("")
+        .setFields(Arrays.asList(field))
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile expected =
-        new ProtoFile("foo.proto", null, NO_STRINGS, NO_STRINGS, Arrays.<Type>asList(messageType),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("foo.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.<Type>asList(messageType))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     assertThat(ProtoSchemaParser.parse("foo.proto", proto))
         .isEqualTo(expected);
   }
@@ -437,13 +686,35 @@ public final class ProtoSchemaParserTest {
         + "  }\n"
         + "}";
     List<Option> options = list(new Option("default_timeout", "30"));
-    Service expected = new Service("SearchService", "SearchService", "", options, list(
-        new Service.Method("Search", "", "SearchRequest", "SearchResponse", NO_OPTIONS),
-        new Service.Method("Purchase", "", "PurchaseRequest", "PurchaseResponse", list( //
-            new Option("squareup.sake.timeout", "15"), //
-            new Option("squareup.a.b", map("value", list("FOO", "BAR")))))));
-    ProtoFile protoFile = new ProtoFile("descriptor.proto", null, NO_STRINGS, NO_STRINGS, NO_TYPES,
-        Arrays.asList(expected), NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+    Service expected = new Service.Builder().setName("SearchService")
+        .setFqname("SearchService")
+        .setDocumentation("")
+        .setOptions(options)
+        .setMethods(list(
+            new Service.Method.Builder().setName("Search")
+                .setDocumentation("")
+                .setRequestType("SearchRequest")
+                .setResponseType("SearchResponse")
+                .setOptions(NO_OPTIONS)
+                .build(),
+            new Service.Method.Builder().setName("Purchase")
+                .setDocumentation("")
+                .setRequestType("PurchaseRequest")
+                .setResponseType("PurchaseResponse")
+                .setOptions(list( //
+                    new Option("squareup.sake.timeout", "15"), //
+                    new Option("squareup.a.b", map("value", list("FOO", "BAR")))))
+                .build()))
+        .build();
+    ProtoFile protoFile = new ProtoFile.Builder().setFileName("descriptor.proto")
+        .setPackageName(null)
+        .setDependencies(NO_STRINGS)
+        .setPublicDependencies(NO_STRINGS)
+        .setTypes(NO_TYPES)
+        .setServices(Arrays.asList(expected))
+        .setOptions(NO_OPTIONS)
+        .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+        .build();
     assertThat(ProtoSchemaParser.parse("descriptor.proto", proto))
         .isEqualTo(protoFile);
   }
@@ -453,12 +724,31 @@ public final class ProtoSchemaParserTest {
         + "message HexTag {\n"
         + "  required string hex = 0x10;\n"
         + "}";
-    Type expected = new MessageType("HexTag", "HexTag", "",
-        Arrays.asList(new MessageType.Field(Label.REQUIRED, "string", "hex", 16, "", NO_OPTIONS)),
-        NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+    Type expected = new MessageType.Builder().setName("HexTag")
+        .setFqname("HexTag")
+        .setDocumentation("")
+        .setFields(Arrays.asList(
+            new MessageType.Field.Builder().setLabel(Label.REQUIRED)
+                .setType("string")
+                .setName("hex")
+                .setTag(16)
+                .setDocumentation("")
+                .setOptions(NO_OPTIONS)
+                .build()))
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile protoFile =
-        new ProtoFile("hex.proto", null, NO_STRINGS, NO_STRINGS, Arrays.asList(expected),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("hex.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(expected))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     assertThat(ProtoSchemaParser.parse("hex.proto", proto)).isEqualTo(protoFile);
   }
 
@@ -500,11 +790,24 @@ public final class ProtoSchemaParserTest {
     options.add(new Option("squareup.four", option_four_map));
 
     Type expected =
-        new MessageType("ExoticOptions", "ExoticOptions", "", Arrays.<MessageType.Field>asList(),
-            NO_TYPES, NO_EXTENSIONS, options);
+        new MessageType.Builder().setName("ExoticOptions")
+            .setFqname("ExoticOptions")
+            .setDocumentation("")
+            .setFields(Arrays.<MessageType.Field>asList())
+            .setNestedTypes(NO_TYPES)
+            .setExtensions(NO_EXTENSIONS)
+            .setOptions(options)
+            .build();
     ProtoFile protoFile =
-        new ProtoFile("exotic.proto", null, NO_STRINGS, NO_STRINGS, Arrays.asList(expected),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("exotic.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(expected))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     assertThat(ProtoSchemaParser.parse("exotic.proto", proto)).isEqualTo(protoFile);
   }
 
@@ -518,19 +821,37 @@ public final class ProtoSchemaParserTest {
         + "            (option_string) = [\"string1\",\"string2\"]\n"
         + "    ];\n"
         + "}";
-    MessageType.Field field = new MessageType.Field(Label.OPTIONAL, "field.type", "has_options", 3,
-        "", list(new Option("option_map", map("nested_map", map("key", "value", "key2",
-        list("value2a", "value2b")))), new Option("option_string", list("string1","string2"))));
+    MessageType.Field field = new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+        .setType("field.type")
+        .setName("has_options")
+        .setTag(3)
+        .setDocumentation("")
+        .setOptions(list(new Option("option_map", map("nested_map", map("key", "value", "key2",
+            list("value2a", "value2b")))), new Option("option_string", list("string1", "string2"))))
+        .build();
     assertThat(field.getOptions()).containsOnly( //
         new Option("option_map",
             map("nested_map", map("key", "value", "key2", list("value2a", "value2b")))),
         new Option("option_string", list("string1", "string2")));
 
-    Type expected = new MessageType("StructuredOption", "StructuredOption", "",
-        Arrays.<MessageType.Field>asList(field), NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+    Type expected = new MessageType.Builder().setName("StructuredOption")
+        .setFqname("StructuredOption")
+        .setDocumentation("")
+        .setFields(Arrays.<MessageType.Field>asList(field))
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile protoFile =
-        new ProtoFile("nestedmaps.proto", null, NO_STRINGS, NO_STRINGS, Arrays.asList(expected),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("nestedmaps.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(expected))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     assertThat(ProtoSchemaParser.parse("nestedmaps.proto", proto))
         .isEqualTo(protoFile);
   }
@@ -544,19 +865,37 @@ public final class ProtoSchemaParserTest {
         + "      default = 20\n"
         + "  ];\n"
         + "}";
-    MessageType.Field field = new MessageType.Field(Label.OPTIONAL, "int32", "bar", 1, "",
-        list(new Option("validation.range", new Option("min", "1")),
-            new Option("validation.range", new Option("max", "100")), new Option("default", "20")));
+    MessageType.Field field = new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+        .setType("int32")
+        .setName("bar")
+        .setTag(1)
+        .setDocumentation("")
+        .setOptions(list(new Option("validation.range", new Option("min", "1")),
+            new Option("validation.range", new Option("max", "100")), new Option("default", "20")))
+        .build();
     assertThat(field.getOptions()).containsOnly( //
         new Option("validation.range", new Option("min", "1")), //
         new Option("validation.range", new Option("max", "100")), //
         new Option("default", "20"));
 
-    Type expected = new MessageType("Foo", "Foo", "", Arrays.asList(field), NO_TYPES, NO_EXTENSIONS,
-        NO_OPTIONS);
+    Type expected = new MessageType.Builder().setName("Foo")
+        .setFqname("Foo")
+        .setDocumentation("")
+        .setFields(Arrays.asList(field))
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile protoFile =
-        new ProtoFile("foo.proto", null, NO_STRINGS, NO_STRINGS, Arrays.asList(expected),
-            NO_SERVICES, NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("foo.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(Arrays.asList(expected))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
     assertThat(ProtoSchemaParser.parse("foo.proto", proto)).isEqualTo(protoFile);
   }
 
@@ -564,11 +903,31 @@ public final class ProtoSchemaParserTest {
     String proto = "message C {optional A.B ab = 1;}";
     ProtoFile parse = ProtoSchemaParser.parse("test.proto", proto);
 
-    MessageType.Field field = new MessageType.Field(Label.OPTIONAL, "A.B", "ab", 1, "", NO_OPTIONS);
-    Type type = new MessageType("C", "C", "", list(field), NO_TYPES, NO_EXTENSIONS, NO_OPTIONS);
+    MessageType.Field field = new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
+        .setType("A.B")
+        .setName("ab")
+        .setTag(1)
+        .setDocumentation("")
+        .setOptions(NO_OPTIONS)
+        .build();
+    Type type = new MessageType.Builder().setName("C")
+        .setFqname("C")
+        .setDocumentation("")
+        .setFields(list(field))
+        .setNestedTypes(NO_TYPES)
+        .setExtensions(NO_EXTENSIONS)
+        .setOptions(NO_OPTIONS)
+        .build();
     ProtoFile expected =
-        new ProtoFile("test.proto", null, NO_STRINGS, NO_STRINGS, list(type), NO_SERVICES,
-            NO_OPTIONS, NO_EXTEND_DECLARATIONS);
+        new ProtoFile.Builder().setFileName("test.proto")
+            .setPackageName(null)
+            .setDependencies(NO_STRINGS)
+            .setPublicDependencies(NO_STRINGS)
+            .setTypes(list(type))
+            .setServices(NO_SERVICES)
+            .setOptions(NO_OPTIONS)
+            .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
+            .build();
 
     assertThat(parse).isEqualTo(expected);
   }
