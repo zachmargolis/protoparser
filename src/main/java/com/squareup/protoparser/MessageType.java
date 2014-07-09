@@ -141,7 +141,7 @@ public final class MessageType implements Type {
   public Builder builder() {
     return new Builder()
         .setName(name)
-        .setFqname(fqname)
+        .setFullyQualifiedName(fqname)
         .setDocumentation(documentation)
         .setFields(fields)
         .setNestedTypes(nestedTypes)
@@ -167,7 +167,7 @@ public final class MessageType implements Type {
       return this;
     }
 
-    public Builder setFqname(String fqname) {
+    public Builder setFullyQualifiedName(String fqname) {
       this.fqname = fqname;
       return this;
     }
@@ -350,7 +350,7 @@ public final class MessageType implements Type {
         return this;
       }
 
-      public Builder setFqname(String fqname) {
+      public Builder setFullyQualifiedName(String fqname) {
         return this;
       }
 

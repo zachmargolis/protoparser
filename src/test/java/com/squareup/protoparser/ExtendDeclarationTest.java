@@ -13,7 +13,7 @@ import static org.fest.assertions.api.Assertions.fail;
 public class ExtendDeclarationTest {
   @Test public void emptyToString() {
     ExtendDeclaration extend = new ExtendDeclaration.Builder().setName("Name")
-        .setFqname("Name")
+        .setFullyQualifiedName("Name")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .build();
@@ -30,7 +30,7 @@ public class ExtendDeclarationTest {
         .setOptions(NO_OPTIONS)
         .build();
     ExtendDeclaration extend = new ExtendDeclaration.Builder().setName("Name")
-        .setFqname("Name")
+        .setFullyQualifiedName("Name")
         .setDocumentation("")
         .setFields(list(field))
         .build();
@@ -50,7 +50,7 @@ public class ExtendDeclarationTest {
         .setOptions(NO_OPTIONS)
         .build();
     ExtendDeclaration extend = new ExtendDeclaration.Builder().setName("Name")
-        .setFqname("Name")
+        .setFullyQualifiedName("Name")
         .setDocumentation("Hello")
         .setFields(list(field))
         .build();
@@ -79,7 +79,7 @@ public class ExtendDeclarationTest {
         .build();
     try {
       new ExtendDeclaration.Builder().setName("Extend")
-          .setFqname("example.Extend")
+          .setFullyQualifiedName("example.Extend")
           .setDocumentation("")
           .setFields(list(field1, field2))
           .build();

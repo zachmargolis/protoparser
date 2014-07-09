@@ -146,7 +146,7 @@ public final class ProtoSchemaParserTest {
         + "  optional int32 result_per_page = 3;\n"
         + "}";
     Type expected = new MessageType.Builder().setName("SearchRequest")
-        .setFqname("SearchRequest")
+        .setFullyQualifiedName("SearchRequest")
         .setDocumentation("")
         .setFields(Arrays.asList(
             new MessageType.Field.Builder().setLabel(Label.REQUIRED)
@@ -202,7 +202,7 @@ public final class ProtoSchemaParserTest {
         + "  SYRUP = 3;\n"
         + "}\n";
     Type expected = new EnumType.Builder().setName("Topping")
-        .setFqname("Topping")
+        .setFullyQualifiedName("Topping")
         .setDocumentation("What's on my waffles.\nAlso works on pancakes.")
         .setOptions(NO_OPTIONS)
         .setValues(Arrays.asList(new Value("FRUIT", 1, "", NO_OPTIONS),
@@ -242,7 +242,7 @@ public final class ProtoSchemaParserTest {
     List<Option> fruitOptions = list(new Option("healthy", "true"));
     List<Option> toppingOptions = list(new Option("max_choices", "2"));
     Type expected = new EnumType.Builder().setName("Topping")
-        .setFqname("Topping")
+        .setFullyQualifiedName("Topping")
         .setDocumentation("What's on my waffles.\nAlso works on pancakes.")
         .setOptions(toppingOptions)
         .setValues(list(new Value("FRUIT", 1, "", fruitOptions),
@@ -273,7 +273,7 @@ public final class ProtoSchemaParserTest {
         + "message FileDescriptorSet {\n"
         + "}\n";
     Type message = new MessageType.Builder().setName("FileDescriptorSet")
-        .setFqname("google.protobuf.FileDescriptorSet")
+        .setFullyQualifiedName("google.protobuf.FileDescriptorSet")
         .setDocumentation(""
             + "The protocol compiler can output a FileDescriptorSet containing the .proto\n"
             + "files it parses.")
@@ -308,7 +308,7 @@ public final class ProtoSchemaParserTest {
         + "  extensions 1000 to max;\n"
         + "}\n";
     Type enumType = new EnumType.Builder().setName("CType")
-        .setFqname("FieldOptions.CType")
+        .setFullyQualifiedName("FieldOptions.CType")
         .setDocumentation("")
         .setOptions(NO_OPTIONS)
         .setValues(Arrays.asList(new Value("STRING", 0, "",
@@ -326,7 +326,7 @@ public final class ProtoSchemaParserTest {
         new Option("deprecated", "true"));
 
     Type messageType = new MessageType.Builder().setName("FieldOptions")
-        .setFqname("FieldOptions")
+        .setFullyQualifiedName("FieldOptions")
         .setDocumentation("")
         .setFields(Arrays.asList(field))
         .setNestedTypes(Arrays.asList(enumType))
@@ -388,7 +388,7 @@ public final class ProtoSchemaParserTest {
         + "}";
     List<ExtendDeclaration> extendDeclarations = new ArrayList<ExtendDeclaration>();
     extendDeclarations.add(new ExtendDeclaration.Builder().setName("Foo")
-        .setFqname("Foo")
+        .setFullyQualifiedName("Foo")
         .setDocumentation("Extends Foo")
         .setFields(Arrays.asList(new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
             .setType("int32")
@@ -421,7 +421,7 @@ public final class ProtoSchemaParserTest {
         + "}";
     List<ExtendDeclaration> extendDeclarations = new ArrayList<ExtendDeclaration>();
     extendDeclarations.add(new ExtendDeclaration.Builder().setName("Foo")
-        .setFqname("Foo")
+        .setFullyQualifiedName("Foo")
         .setDocumentation("")
         .setFields(Arrays.asList(new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
             .setType("Bar")
@@ -433,7 +433,7 @@ public final class ProtoSchemaParserTest {
         .build());
     Type messageType =
         new MessageType.Builder().setName("Bar")
-            .setFqname("Bar")
+            .setFullyQualifiedName("Bar")
             .setDocumentation("")
             .setFields(NO_FIELDS)
             .setNestedTypes(NO_TYPES)
@@ -465,7 +465,7 @@ public final class ProtoSchemaParserTest {
         + "}";
     List<ExtendDeclaration> extendDeclarations = new ArrayList<ExtendDeclaration>();
     extendDeclarations.add(new ExtendDeclaration.Builder().setName("Foo")
-        .setFqname("kit.kat.Foo")
+        .setFullyQualifiedName("kit.kat.Foo")
         .setDocumentation("")
         .setFields(Arrays.asList(new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
             .setType("Bar")
@@ -477,7 +477,7 @@ public final class ProtoSchemaParserTest {
         .build());
     Type messageType =
         new MessageType.Builder().setName("Bar")
-            .setFqname("kit.kat.Bar")
+            .setFullyQualifiedName("kit.kat.Bar")
             .setDocumentation("")
             .setFields(NO_FIELDS)
             .setNestedTypes(NO_TYPES)
@@ -507,7 +507,7 @@ public final class ProtoSchemaParserTest {
         + "}";
     List<ExtendDeclaration> extendDeclarations = new ArrayList<ExtendDeclaration>();
     extendDeclarations.add(new ExtendDeclaration.Builder().setName("example.Foo")
-        .setFqname("example.Foo")
+        .setFullyQualifiedName("example.Foo")
         .setDocumentation("")
         .setFields(Arrays.asList(new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
             .setType("Bar")
@@ -519,7 +519,7 @@ public final class ProtoSchemaParserTest {
         .build());
     Type messageType =
         new MessageType.Builder().setName("Bar")
-            .setFqname("Bar")
+            .setFullyQualifiedName("Bar")
             .setDocumentation("")
             .setFields(NO_FIELDS)
             .setNestedTypes(NO_TYPES)
@@ -551,7 +551,7 @@ public final class ProtoSchemaParserTest {
         + "}";
     List<ExtendDeclaration> extendDeclarations = new ArrayList<ExtendDeclaration>();
     extendDeclarations.add(new ExtendDeclaration.Builder().setName("example.Foo")
-        .setFqname("example.Foo")
+        .setFullyQualifiedName("example.Foo")
         .setDocumentation("")
         .setFields(Arrays.asList(new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
             .setType("Bar")
@@ -563,7 +563,7 @@ public final class ProtoSchemaParserTest {
         .build());
     Type messageType =
         new MessageType.Builder().setName("Bar")
-            .setFqname("kit.kat.Bar")
+            .setFullyQualifiedName("kit.kat.Bar")
             .setDocumentation("")
             .setFields(NO_FIELDS)
             .setNestedTypes(NO_TYPES)
@@ -599,7 +599,7 @@ public final class ProtoSchemaParserTest {
     assertThat(field.getOptions()).containsOnly(new Option("squareup.redacted", "true"));
 
     Type messageType = new MessageType.Builder().setName("Foo")
-        .setFqname("Foo")
+        .setFullyQualifiedName("Foo")
         .setDocumentation("")
         .setFields(Arrays.asList(field))
         .setNestedTypes(NO_TYPES)
@@ -639,7 +639,7 @@ public final class ProtoSchemaParserTest {
         "\u0007\b\f\n\r\t\u000b\u0001f\u0001\u0001\u0009\u0009I\u000e\u000e\u000e\u000eAA"));
 
     Type messageType = new MessageType.Builder().setName("Foo")
-        .setFqname("Foo")
+        .setFullyQualifiedName("Foo")
         .setDocumentation("")
         .setFields(Arrays.asList(field))
         .setNestedTypes(NO_TYPES)
@@ -687,7 +687,7 @@ public final class ProtoSchemaParserTest {
         + "}";
     List<Option> options = list(new Option("default_timeout", "30"));
     Service expected = new Service.Builder().setName("SearchService")
-        .setFqname("SearchService")
+        .setFullyQualifiedName("SearchService")
         .setDocumentation("")
         .setOptions(options)
         .setMethods(list(
@@ -725,7 +725,7 @@ public final class ProtoSchemaParserTest {
         + "  required string hex = 0x10;\n"
         + "}";
     Type expected = new MessageType.Builder().setName("HexTag")
-        .setFqname("HexTag")
+        .setFullyQualifiedName("HexTag")
         .setDocumentation("")
         .setFields(Arrays.asList(
             new MessageType.Field.Builder().setLabel(Label.REQUIRED)
@@ -791,7 +791,7 @@ public final class ProtoSchemaParserTest {
 
     Type expected =
         new MessageType.Builder().setName("ExoticOptions")
-            .setFqname("ExoticOptions")
+            .setFullyQualifiedName("ExoticOptions")
             .setDocumentation("")
             .setFields(Arrays.<MessageType.Field>asList())
             .setNestedTypes(NO_TYPES)
@@ -835,7 +835,7 @@ public final class ProtoSchemaParserTest {
         new Option("option_string", list("string1", "string2")));
 
     Type expected = new MessageType.Builder().setName("StructuredOption")
-        .setFqname("StructuredOption")
+        .setFullyQualifiedName("StructuredOption")
         .setDocumentation("")
         .setFields(Arrays.<MessageType.Field>asList(field))
         .setNestedTypes(NO_TYPES)
@@ -879,7 +879,7 @@ public final class ProtoSchemaParserTest {
         new Option("default", "20"));
 
     Type expected = new MessageType.Builder().setName("Foo")
-        .setFqname("Foo")
+        .setFullyQualifiedName("Foo")
         .setDocumentation("")
         .setFields(Arrays.asList(field))
         .setNestedTypes(NO_TYPES)
@@ -911,7 +911,7 @@ public final class ProtoSchemaParserTest {
         .setOptions(NO_OPTIONS)
         .build();
     Type type = new MessageType.Builder().setName("C")
-        .setFqname("C")
+        .setFullyQualifiedName("C")
         .setDocumentation("")
         .setFields(list(field))
         .setNestedTypes(NO_TYPES)

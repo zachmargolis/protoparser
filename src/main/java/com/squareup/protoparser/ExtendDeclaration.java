@@ -77,7 +77,7 @@ public final class ExtendDeclaration {
   public Builder builder() {
     return new Builder()
         .setName(name)
-        .setFqname(fqname)
+        .setFullyQualifiedName(fqname)
         .setDocumentation(documentation)
         .setFields(fields);
   }
@@ -93,7 +93,7 @@ public final class ExtendDeclaration {
       return this;
     }
 
-    public Builder setFqname(String fqname) {
+    public Builder setFullyQualifiedName(String fqname) {
       this.fqname = fqname;
       return this;
     }

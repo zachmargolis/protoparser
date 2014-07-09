@@ -61,7 +61,7 @@ public class ProtoFileTest {
 
   @Test public void simpleToString() {
     Type type = new MessageType.Builder().setName("Message")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .setNestedTypes(NO_TYPES)
@@ -87,7 +87,7 @@ public class ProtoFileTest {
 
   @Test public void simpleWithImportsToString() {
     Type type = new MessageType.Builder().setName("Message")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .setNestedTypes(NO_TYPES)
@@ -115,7 +115,7 @@ public class ProtoFileTest {
 
   @Test public void simpleWithPublicImportsToString() {
     Type type = new MessageType.Builder().setName("Message")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .setNestedTypes(NO_TYPES)
@@ -143,7 +143,7 @@ public class ProtoFileTest {
 
   @Test public void simpleWithBothImportsToString() {
     Type type = new MessageType.Builder().setName("Message")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .setNestedTypes(NO_TYPES)
@@ -172,7 +172,7 @@ public class ProtoFileTest {
 
   @Test public void simpleWithServicesToString() {
     Type type = new MessageType.Builder().setName("Message")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .setNestedTypes(NO_TYPES)
@@ -180,7 +180,7 @@ public class ProtoFileTest {
         .setOptions(NO_OPTIONS)
         .build();
     Service service = new Service.Builder().setName("Service")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setOptions(NO_OPTIONS)
         .setMethods(NO_METHODS)
@@ -206,7 +206,7 @@ public class ProtoFileTest {
 
   @Test public void simpleWithOptionsToString() {
     Type type = new MessageType.Builder().setName("Message")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .setNestedTypes(NO_TYPES)
@@ -235,7 +235,7 @@ public class ProtoFileTest {
 
   @Test public void simpleWithExtendsToString() {
     Type type = new MessageType.Builder().setName("Message")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .setNestedTypes(NO_TYPES)
@@ -243,7 +243,7 @@ public class ProtoFileTest {
         .setOptions(NO_OPTIONS)
         .build();
     ExtendDeclaration extend = new ExtendDeclaration.Builder().setName("Extend")
-        .setFqname("Extend")
+        .setFullyQualifiedName("Extend")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .build();
@@ -268,7 +268,7 @@ public class ProtoFileTest {
 
   @Test public void multipleEverythingToString() {
     Type type1 = new MessageType.Builder().setName("Message1")
-        .setFqname("example.simple.Message1")
+        .setFullyQualifiedName("example.simple.Message1")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .setNestedTypes(NO_TYPES)
@@ -276,7 +276,7 @@ public class ProtoFileTest {
         .setOptions(NO_OPTIONS)
         .build();
     Type type2 = new MessageType.Builder().setName("Message2")
-        .setFqname("example.simple.Message2")
+        .setFullyQualifiedName("example.simple.Message2")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .setNestedTypes(NO_TYPES)
@@ -285,13 +285,13 @@ public class ProtoFileTest {
         .build();
     ExtendDeclaration extend1 =
         new ExtendDeclaration.Builder().setName("Extend1")
-            .setFqname("example.simple.Extend1")
+            .setFullyQualifiedName("example.simple.Extend1")
             .setDocumentation("")
             .setFields(NO_FIELDS)
             .build();
     ExtendDeclaration extend2 =
         new ExtendDeclaration.Builder().setName("Extend2")
-            .setFqname("example.simple.Extend2")
+            .setFullyQualifiedName("example.simple.Extend2")
             .setDocumentation("")
             .setFields(NO_FIELDS)
             .build();
@@ -299,14 +299,14 @@ public class ProtoFileTest {
     Option option2 = new Option("foo", "bar");
     Service service1 =
         new Service.Builder().setName("Service1")
-            .setFqname("example.simple.Service1")
+            .setFullyQualifiedName("example.simple.Service1")
             .setDocumentation("")
             .setOptions(NO_OPTIONS)
             .setMethods(NO_METHODS)
             .build();
     Service service2 =
         new Service.Builder().setName("Service2")
-            .setFqname("example.simple.Service2")
+            .setFullyQualifiedName("example.simple.Service2")
             .setDocumentation("")
             .setOptions(NO_OPTIONS)
             .setMethods(NO_METHODS)

@@ -94,7 +94,7 @@ public final class Service {
   public Builder builder() {
     return new Builder()
         .setName(name)
-        .setFqname(fqname)
+        .setFullyQualifiedName(fqname)
         .setDocumentation(documentation)
         .setOptions(options)
         .setMethods(methods);
@@ -112,7 +112,7 @@ public final class Service {
       return this;
     }
 
-    public Builder setFqname(String fqname) {
+    public Builder setFullyQualifiedName(String fqname) {
       this.fqname = fqname;
       return this;
     }

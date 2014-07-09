@@ -12,7 +12,7 @@ import static org.fest.assertions.api.Assertions.fail;
 public class EnumTypeTest {
   @Test public void emptyToString() {
     EnumType type = new EnumType.Builder().setName("Enum")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setOptions(NO_OPTIONS)
         .setValues(NO_VALUES)
@@ -26,7 +26,7 @@ public class EnumTypeTest {
     Value two = new Value("TWO", 2, "", NO_OPTIONS);
     Value six = new Value("SIX", 6, "", NO_OPTIONS);
     EnumType type = new EnumType.Builder().setName("Enum")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setOptions(NO_OPTIONS)
         .setValues(list(one, two, six))
@@ -46,7 +46,7 @@ public class EnumTypeTest {
     Value six = new Value("SIX", 6, "", NO_OPTIONS);
     Option kitKat = new Option("kit", "kat");
     EnumType type = new EnumType.Builder().setName("Enum")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setOptions(list(kitKat))
         .setValues(list(one, two, six))
@@ -67,7 +67,7 @@ public class EnumTypeTest {
     Value two = new Value("TWO", 2, "", NO_OPTIONS);
     Value six = new Value("SIX", 6, "", NO_OPTIONS);
     EnumType type = new EnumType.Builder().setName("Enum")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("Hello")
         .setOptions(NO_OPTIONS)
         .setValues(list(one, two, six))
@@ -109,7 +109,7 @@ public class EnumTypeTest {
     Value value2 = new Value("VALUE2", 1, "", NO_OPTIONS);
     try {
       new EnumType.Builder().setName("Enum1")
-          .setFqname("example.Enum")
+          .setFullyQualifiedName("example.Enum")
           .setDocumentation("")
           .setOptions(NO_OPTIONS)
           .setValues(list(value1, value2))
@@ -125,7 +125,7 @@ public class EnumTypeTest {
     Value value1 = new Value("VALUE1", 1, "", NO_OPTIONS);
     Value value2 = new Value("VALUE2", 1, "", NO_OPTIONS);
     EnumType type = new EnumType.Builder().setName("Enum1")
-        .setFqname("example.Enum")
+        .setFullyQualifiedName("example.Enum")
         .setDocumentation("")
         .setOptions(list(option1))
         .setValues(list(value1, value2))

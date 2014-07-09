@@ -11,7 +11,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class ServiceTest {
   @Test public void emptyToString() {
     Service service = new Service.Builder().setName("Service")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setOptions(NO_OPTIONS)
         .setMethods(NO_METHODS)
@@ -28,7 +28,7 @@ public class ServiceTest {
         .setOptions(NO_OPTIONS)
         .build();
     Service service = new Service.Builder().setName("Service")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setOptions(NO_OPTIONS)
         .setMethods(list(method))
@@ -48,7 +48,7 @@ public class ServiceTest {
         .setOptions(NO_OPTIONS)
         .build();
     Service service = new Service.Builder().setName("Service")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setOptions(list(new Option("foo", "bar")))
         .setMethods(list(method))
@@ -70,7 +70,7 @@ public class ServiceTest {
         .setOptions(NO_OPTIONS)
         .build();
     Service service = new Service.Builder().setName("Service")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("Hello")
         .setOptions(NO_OPTIONS)
         .setMethods(list(method))
@@ -91,7 +91,7 @@ public class ServiceTest {
         .setOptions(NO_OPTIONS)
         .build();
     Service service = new Service.Builder().setName("Service")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setOptions(NO_OPTIONS)
         .setMethods(list(method, method))

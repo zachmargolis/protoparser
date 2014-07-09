@@ -240,7 +240,7 @@ public final class ProtoSchemaParser {
     }
     prefix = previousPrefix;
     return new MessageType.Builder().setName(name)
-        .setFqname(prefix + name)
+        .setFullyQualifiedName(prefix + name)
         .setDocumentation(documentation)
         .setFields(fields)
         .setNestedTypes(nestedTypes)
@@ -270,7 +270,7 @@ public final class ProtoSchemaParser {
       fqname = packageName + "." + name;
     }
     return new ExtendDeclaration.Builder().setName(name)
-        .setFqname(fqname)
+        .setFullyQualifiedName(fqname)
         .setDocumentation(documentation)
         .setFields(fields)
         .build();
@@ -296,7 +296,7 @@ public final class ProtoSchemaParser {
       }
     }
     return new Service.Builder().setName(name)
-        .setFqname(prefix + name)
+        .setFullyQualifiedName(prefix + name)
         .setDocumentation(documentation)
         .setOptions(options)
         .setMethods(methods)
@@ -323,7 +323,7 @@ public final class ProtoSchemaParser {
       }
     }
     return new EnumType.Builder().setName(name)
-        .setFqname(prefix + name)
+        .setFullyQualifiedName(prefix + name)
         .setDocumentation(documentation)
         .setOptions(options)
         .setValues(values)

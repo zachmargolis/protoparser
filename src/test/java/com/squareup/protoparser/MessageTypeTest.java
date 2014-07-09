@@ -16,7 +16,7 @@ import static org.fest.assertions.api.Assertions.fail;
 public class MessageTypeTest {
   @Test public void emptyToString() {
     Type type = new MessageType.Builder().setName("Message")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setFields(NO_FIELDS)
         .setNestedTypes(NO_TYPES)
@@ -37,7 +37,7 @@ public class MessageTypeTest {
         .build();
     Type type =
         new MessageType.Builder().setName("Message")
-            .setFqname("")
+            .setFullyQualifiedName("")
             .setDocumentation("")
             .setFields(list(field))
             .setNestedTypes(NO_TYPES)
@@ -61,7 +61,7 @@ public class MessageTypeTest {
         .build();
     Type type =
         new MessageType.Builder().setName("Message")
-            .setFqname("")
+            .setFullyQualifiedName("")
             .setDocumentation("Hello")
             .setFields(list(field))
             .setNestedTypes(NO_TYPES)
@@ -85,7 +85,7 @@ public class MessageTypeTest {
         .setOptions(NO_OPTIONS)
         .build();
     Type type = new MessageType.Builder().setName("Message")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setFields(list(field))
         .setNestedTypes(NO_TYPES)
@@ -111,7 +111,7 @@ public class MessageTypeTest {
         .build();
     Type nested =
         new MessageType.Builder().setName("Nested")
-            .setFqname("")
+            .setFullyQualifiedName("")
             .setDocumentation("")
             .setFields(list(field))
             .setNestedTypes(NO_TYPES)
@@ -120,7 +120,7 @@ public class MessageTypeTest {
             .build();
     Type type =
         new MessageType.Builder().setName("Message")
-            .setFqname("")
+            .setFullyQualifiedName("")
             .setDocumentation("")
             .setFields(list(field))
             .setNestedTypes(list(nested))
@@ -149,7 +149,7 @@ public class MessageTypeTest {
     Extensions extensions = new Extensions("", 500, 501);
     Type type =
         new MessageType.Builder().setName("Message")
-            .setFqname("")
+            .setFullyQualifiedName("")
             .setDocumentation("")
             .setFields(list(field))
             .setNestedTypes(NO_TYPES)
@@ -184,7 +184,7 @@ public class MessageTypeTest {
     Extensions extensions2 = new Extensions("", 503, 503);
     Type nested =
         new MessageType.Builder().setName("Nested")
-            .setFqname("")
+            .setFullyQualifiedName("")
             .setDocumentation("")
             .setFields(list(field1))
             .setNestedTypes(NO_TYPES)
@@ -193,7 +193,7 @@ public class MessageTypeTest {
             .build();
     Option option = new Option("kit", "kat");
     Type type = new MessageType.Builder().setName("Message")
-        .setFqname("")
+        .setFullyQualifiedName("")
         .setDocumentation("")
         .setFields(list(field1, field2))
         .setNestedTypes(list(nested))
@@ -274,7 +274,7 @@ public class MessageTypeTest {
         .build();
     try {
       new MessageType.Builder().setName("Message")
-          .setFqname("example.Message")
+          .setFullyQualifiedName("example.Message")
           .setDocumentation("")
           .setFields(list(field1, field2))
           .setNestedTypes(NO_TYPES)
@@ -290,20 +290,20 @@ public class MessageTypeTest {
   @Test public void duplicateEnumValueTagInScopeThrows() {
     Value value = new Value("VALUE", 1, "", NO_OPTIONS);
     Type enum1 = new EnumType.Builder().setName("Enum1")
-        .setFqname("example.Enum1")
+        .setFullyQualifiedName("example.Enum1")
         .setDocumentation("")
         .setOptions(NO_OPTIONS)
         .setValues(list(value))
         .build();
     Type enum2 = new EnumType.Builder().setName("Enum2")
-        .setFqname("example.Enum2")
+        .setFullyQualifiedName("example.Enum2")
         .setDocumentation("")
         .setOptions(NO_OPTIONS)
         .setValues(list(value))
         .build();
     try {
       new MessageType.Builder().setName("Message")
-          .setFqname("example.Message")
+          .setFullyQualifiedName("example.Message")
           .setDocumentation("")
           .setFields(NO_FIELDS)
           .setNestedTypes(list(enum1, enum2))
