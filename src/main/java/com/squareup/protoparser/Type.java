@@ -10,4 +10,16 @@ public interface Type {
   String getDocumentation();
   List<Option> getOptions();
   List<Type> getNestedTypes();
+
+  Builder builder();
+
+  public interface Builder {
+    Builder setName(String name);
+    Builder setFqname(String fqname);
+    Builder setDocumentation(String documentation);
+    Builder setOptions(List<Option> options);
+    Builder setNestedTypes(List<Type> nestedTypes);
+
+    Type build();
+  }
 }

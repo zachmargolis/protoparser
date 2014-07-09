@@ -153,7 +153,7 @@ public final class MessageType implements Type {
     OPTIONAL, REQUIRED, REPEATED
   }
 
-  public static final class Builder {
+  public static final class Builder implements Type.Builder {
     private String name;
     private String fqname;
     private String documentation;
@@ -350,6 +350,10 @@ public final class MessageType implements Type {
         return this;
       }
 
+      public Builder setFqname(String fqname) {
+        return this;
+      }
+
       public Builder setTag(int tag) {
         this.tag = tag;
         return this;
@@ -362,6 +366,10 @@ public final class MessageType implements Type {
 
       public Builder setOptions(List<Option> options) {
         this.options = options;
+        return this;
+      }
+
+      public Builder setNestedTypes(List<Type> nestedTypes) {
         return this;
       }
 

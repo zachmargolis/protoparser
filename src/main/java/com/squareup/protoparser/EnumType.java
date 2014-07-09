@@ -159,7 +159,7 @@ public final class EnumType implements Type {
         .setValues(values);
   }
 
-  public static final class Builder {
+  public static final class Builder implements Type.Builder {
     private String name;
     private String fqname;
     private String documentation;
@@ -186,12 +186,16 @@ public final class EnumType implements Type {
       return this;
     }
 
+    public Builder setNestedTypes(List<Type> nestedTypes) {
+      return this;
+    }
+
     public Builder setValues(List<Value> values) {
       this.values = values;
       return this;
     }
 
-    public EnumType build() {
+    @Override public EnumType build() {
       return new EnumType(name, fqname, documentation, options, values);
     }
   }
