@@ -113,6 +113,8 @@ public final class Option {
         appendIndented(builder, optionList.get(i).toString() + endl);
       }
       builder.append(']');
+    } else if (value instanceof Map) {
+      // FIXME: actually implement this
     } else {
       throw new IllegalStateException("Unknown value type " + value.getClass().getCanonicalName());
     }

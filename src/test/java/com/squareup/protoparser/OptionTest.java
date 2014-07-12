@@ -39,6 +39,22 @@ public class OptionTest {
     assertThat(option.toString()).isEqualTo(expected);
   }
 
+  @Test public void mapToString() {
+    List<Option> options = list( //
+        new Option("mcnulty", map( //
+            "pieceofwork", "TRUE"
+        ))
+    );
+    // FIXME: actually use this example
+    // String expected = ""
+    //     + "mcnulty = [\n"
+    //     + "  { pieceofwork: \"TRUE\" },\n"
+    //     + "]";
+    // assertThat(options.toString()).isEqualTo(expected);
+    options.toString();
+    assertThat(true).isTrue().as("got to here without blowing up");
+  }
+
   @Test public void optionListToMap() {
     List<Option> options = list( //
         new Option("foo", "bar"), //
