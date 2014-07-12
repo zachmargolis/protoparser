@@ -90,7 +90,7 @@ public class MessageTypeTest {
         .setFields(list(field))
         .setNestedTypes(NO_TYPES)
         .setExtensions(NO_EXTENSIONS)
-        .setOptions(list(new Option("kit", "kat")))
+        .setOptions(list(new Option("kit", "kat", Option.Source.BUILTIN)))
         .build();
     String expected = ""
         + "message Message {\n"
@@ -191,7 +191,7 @@ public class MessageTypeTest {
             .setExtensions(NO_EXTENSIONS)
             .setOptions(NO_OPTIONS)
             .build();
-    Option option = new Option("kit", "kat");
+    Option option = new Option("kit", "kat", Option.Source.BUILTIN);
     Type type = new MessageType.Builder().setName("Message")
         .setFullyQualifiedName("")
         .setDocumentation("")
@@ -249,7 +249,7 @@ public class MessageTypeTest {
         .setName("name")
         .setTag(1)
         .setDocumentation("")
-        .setOptions(list(new Option("kit", "kat")))
+        .setOptions(list(new Option("kit", "kat", Option.Source.BUILTIN)))
         .build();
     String expected = "required Type name = 1 [\n"
         + "  kit = \"kat\"\n"
@@ -323,7 +323,7 @@ public class MessageTypeTest {
             .setName("name1")
             .setTag(1)
             .setDocumentation("")
-            .setOptions(list(new Option("deprecated", "true")))
+            .setOptions(list(new Option("deprecated", "true", Option.Source.BUILTIN)))
             .build();
     assertThat(field.isDeprecated()).isTrue();
   }
@@ -335,7 +335,7 @@ public class MessageTypeTest {
             .setName("name1")
             .setTag(1)
             .setDocumentation("")
-            .setOptions(list(new Option("deprecated", "false")))
+            .setOptions(list(new Option("deprecated", "false", Option.Source.BUILTIN)))
             .build();
     assertThat(field.isDeprecated()).isFalse();
   }
@@ -357,7 +357,7 @@ public class MessageTypeTest {
         .setName("name1")
         .setTag(1)
         .setDocumentation("")
-        .setOptions(list(new Option("packed", "true")))
+        .setOptions(list(new Option("packed", "true", Option.Source.BUILTIN)))
         .build();
     assertThat(field.isPacked()).isTrue();
   }
@@ -368,7 +368,7 @@ public class MessageTypeTest {
         .setName("name1")
         .setTag(1)
         .setDocumentation("")
-        .setOptions(list(new Option("packed", "false")))
+        .setOptions(list(new Option("packed", "false", Option.Source.BUILTIN)))
         .build();
     assertThat(field.isPacked()).isFalse();
   }
@@ -390,7 +390,7 @@ public class MessageTypeTest {
         .setName("name1")
         .setTag(1)
         .setDocumentation("")
-        .setOptions(list(new Option("default", "foo")))
+        .setOptions(list(new Option("default", "foo", Option.Source.BUILTIN)))
         .build();
     assertThat(field.getDefault()).isEqualTo("foo");
   }

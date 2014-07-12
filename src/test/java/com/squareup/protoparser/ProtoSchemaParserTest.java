@@ -30,13 +30,14 @@ public final class ProtoSchemaParserTest {
         .setName("ctype")
         .setTag(1)
         .setDocumentation("")
-        .setOptions(list(new Option("default", "STRING"), new Option("deprecated", "true")))
+        .setOptions(list(new Option("default", "STRING", Option.Source.BUILTIN),
+            new Option("deprecated", "true", Option.Source.BUILTIN)))
         .build();
     assertThat(field.isDeprecated()).isTrue();
     assertThat(field.getDefault()).isEqualTo("STRING");
     assertThat(field.getOptions()).containsOnly( //
-        new Option("default", "STRING"), //
-        new Option("deprecated", "true"));
+        new Option("default", "STRING", Option.Source.BUILTIN), //
+        new Option("deprecated", "true", Option.Source.BUILTIN));
   }
 
   @Test public void documentationFormats() {
@@ -232,7 +233,7 @@ public final class ProtoSchemaParserTest {
         + "enum Topping {\n"
         + "  option (max_choices) = 2;\n"
         + "\n"
-        + "  FRUIT = 1 [(healthy) = true, (legit_level) = TOO_LEGIT];\n"
+        + "  FRUIT = 1 [(healthy) = true, (legit_level) = TOO_LEGIT, deprecated = true];\n"
         + "  /** Yummy, yummy cream. */\n"
         + "  CREAM = 2;\n"
         + "\n"
@@ -240,9 +241,10 @@ public final class ProtoSchemaParserTest {
         + "  SYRUP = 3;\n"
         + "}\n";
     List<Option> fruitOptions = list(
-        new Option("healthy", true),
-        new Option("legit_level", EnumType.Value.anonymous("TOO_LEGIT")));
-    List<Option> toppingOptions = list(new Option("max_choices", 2));
+        new Option("healthy", true, Option.Source.CUSTOM),
+        new Option("legit_level", EnumType.Value.anonymous("TOO_LEGIT"), Option.Source.CUSTOM),
+        new Option("deprecated", true, Option.Source.BUILTIN));
+    List<Option> toppingOptions = list(new Option("max_choices", 2, Option.Source.CUSTOM));
     Type expected = new EnumType.Builder().setName("Topping")
         .setFullyQualifiedName("Topping")
         .setDocumentation("What's on my waffles.\nAlso works on pancakes.")
@@ -291,7 +293,8 @@ public final class ProtoSchemaParserTest {
             .setPublicDependencies(NO_STRINGS)
             .setTypes(Arrays.asList(message))
             .setServices(NO_SERVICES)
-            .setOptions(list(new Option("java_package", "com.google.protobuf")))
+            .setOptions(
+                list(new Option("java_package", "com.google.protobuf", Option.Source.BUILTIN)))
             .setExtendDeclarations(NO_EXTEND_DECLARATIONS)
             .build();
     assertThat(ProtoSchemaParser.parse("descriptor.proto", proto))
@@ -314,19 +317,20 @@ public final class ProtoSchemaParserTest {
         .setDocumentation("")
         .setOptions(NO_OPTIONS)
         .setValues(Arrays.asList(new Value("STRING", 0, "",
-            Arrays.asList(new Option("opt_a", 1), new Option("opt_b", 2)))))
+            Arrays.asList(new Option("opt_a", 1, Option.Source.CUSTOM),
+                new Option("opt_b", 2, Option.Source.CUSTOM)))))
         .build();
     MessageType.Field field = new MessageType.Field.Builder().setLabel(Label.OPTIONAL)
         .setType("CType")
         .setName("ctype")
         .setTag(1)
         .setDocumentation("")
-        .setOptions(list(new Option("default", EnumType.Value.anonymous("STRING")),
-            new Option("deprecated", true)))
+        .setOptions(list(new Option("default", EnumType.Value.anonymous("STRING"), Option.Source.BUILTIN),
+            new Option("deprecated", true, Option.Source.BUILTIN)))
         .build();
     assertThat(field.getOptions()).containsOnly( //
-        new Option("default", EnumType.Value.anonymous("STRING")), //
-        new Option("deprecated", true));
+        new Option("default", EnumType.Value.anonymous("STRING"), Option.Source.BUILTIN), //
+        new Option("deprecated", true, Option.Source.BUILTIN));
 
     Type messageType = new MessageType.Builder().setName("FieldOptions")
         .setFullyQualifiedName("FieldOptions")
@@ -597,9 +601,10 @@ public final class ProtoSchemaParserTest {
         .setName("claim_token")
         .setTag(2)
         .setDocumentation("")
-        .setOptions(list(new Option("squareup.redacted", true)))
+        .setOptions(list(new Option("squareup.redacted", true, Option.Source.CUSTOM)))
         .build();
-    assertThat(field.getOptions()).containsOnly(new Option("squareup.redacted", true));
+    assertThat(field.getOptions()).containsOnly(
+        new Option("squareup.redacted", true, Option.Source.CUSTOM));
 
     Type messageType = new MessageType.Builder().setName("Foo")
         .setFullyQualifiedName("Foo")
@@ -636,10 +641,12 @@ public final class ProtoSchemaParserTest {
         .setDocumentation("")
         .setOptions(list(
             new Option("default",
-                "\u0007\b\f\n\r\t\u000b\u0001f\u0001\u0001\u0009\u0009I\u000e\u000e\u000e\u000eAA")))
+                "\u0007\b\f\n\r\t\u000b\u0001f\u0001\u0001\u0009\u0009I\u000e\u000e\u000e\u000eAA",
+                Option.Source.BUILTIN)))
         .build();
     assertThat(field.getOptions()).containsOnly(new Option("default",
-        "\u0007\b\f\n\r\t\u000b\u0001f\u0001\u0001\u0009\u0009I\u000e\u000e\u000e\u000eAA"));
+        "\u0007\b\f\n\r\t\u000b\u0001f\u0001\u0001\u0009\u0009I\u000e\u000e\u000e\u000eAA",
+        Option.Source.BUILTIN));
 
     Type messageType = new MessageType.Builder().setName("Foo")
         .setFullyQualifiedName("Foo")
@@ -688,7 +695,7 @@ public final class ProtoSchemaParserTest {
         + "    option (squareup.a.b) = { value: [FOO, BAR] };\n"
         + "  }\n"
         + "}";
-    List<Option> options = list(new Option("default_timeout", 30));
+    List<Option> options = list(new Option("default_timeout", 30, Option.Source.CUSTOM));
     Service expected = new Service.Builder().setName("SearchService")
         .setFullyQualifiedName("SearchService")
         .setDocumentation("")
@@ -705,9 +712,10 @@ public final class ProtoSchemaParserTest {
                 .setRequestType("PurchaseRequest")
                 .setResponseType("PurchaseResponse")
                 .setOptions(list( //
-                    new Option("squareup.sake.timeout", 15), //
+                    new Option("squareup.sake.timeout", 15, Option.Source.CUSTOM), //
                     new Option("squareup.a.b", map("value",
-                        list(EnumType.Value.anonymous("FOO"), EnumType.Value.anonymous("BAR"))))))
+                        list(EnumType.Value.anonymous("FOO"), EnumType.Value.anonymous("BAR"))),
+                        Option.Source.CUSTOM)))
                 .build()))
         .build();
     ProtoFile protoFile = new ProtoFile.Builder().setFileName("descriptor.proto")
@@ -770,18 +778,18 @@ public final class ProtoSchemaParserTest {
     Map<String, String> option_one_map = new LinkedHashMap<String, String>();
     option_one_map.put("name", "Name");
     option_one_map.put("class_name", "ClassName");
-    options.add(new Option("squareup.one", option_one_map));
+    options.add(new Option("squareup.one", option_one_map, Option.Source.CUSTOM));
     Map<String, Object> option_two_a_map = new LinkedHashMap<String, Object>();
     option_two_a_map.put("[squareup.options.type]", EnumType.Value.anonymous("EXOTIC"));
-    options.add(new Option("squareup.two.a", option_two_a_map));
+    options.add(new Option("squareup.two.a", option_two_a_map, Option.Source.CUSTOM));
     Map<String, List<String>> option_two_b_map = new LinkedHashMap<String, List<String>>();
     option_two_b_map.put("names", Arrays.asList("Foo", "Bar"));
-    options.add(new Option("squareup.two.b", option_two_b_map));
+    options.add(new Option("squareup.two.b", option_two_b_map, Option.Source.CUSTOM));
     Map<String, Map<String, ?>> option_three_map = new LinkedHashMap<String, Map<String, ?>>();
     Map<String, Object> option_three_nested_map = new LinkedHashMap<String, Object>();
     option_three_nested_map.put("y", Arrays.asList(1, 2));
     option_three_map.put("x", option_three_nested_map);
-    options.add(new Option("squareup.three", option_three_map));
+    options.add(new Option("squareup.three", option_three_map, Option.Source.CUSTOM));
 
     Map<String, Map<String, ?>> option_four_map = new LinkedHashMap<String, Map<String, ?>>();
     Map<String, Object> option_four_map_1 = new LinkedHashMap<String, Object>();
@@ -791,7 +799,7 @@ public final class ProtoSchemaParserTest {
     option_four_map_2_b.put("z", 2);
     option_four_map_1.put("y", Arrays.asList(option_four_map_2_a, option_four_map_2_b));
     option_four_map.put("x", option_four_map_1);
-    options.add(new Option("squareup.four", option_four_map));
+    options.add(new Option("squareup.four", option_four_map, Option.Source.CUSTOM));
 
     Type expected =
         new MessageType.Builder().setName("ExoticOptions")
@@ -830,13 +838,17 @@ public final class ProtoSchemaParserTest {
         .setName("has_options")
         .setTag(3)
         .setDocumentation("")
-        .setOptions(list(new Option("option_map", map("nested_map", map("key", "value", "key2",
-            list("value2a", "value2b")))), new Option("option_string", list("string1", "string2"))))
+        .setOptions(
+            list(new Option("option_map",
+                map("nested_map", map("key", "value", "key2", list("value2a", "value2b"))),
+                  Option.Source.CUSTOM),
+                new Option("option_string", list("string1", "string2"), Option.Source.CUSTOM)))
         .build();
     assertThat(field.getOptions()).containsOnly( //
         new Option("option_map",
-            map("nested_map", map("key", "value", "key2", list("value2a", "value2b")))),
-        new Option("option_string", list("string1", "string2")));
+            map("nested_map", map("key", "value", "key2", list("value2a", "value2b"))),
+            Option.Source.CUSTOM),
+        new Option("option_string", list("string1", "string2"), Option.Source.CUSTOM));
 
     Type expected = new MessageType.Builder().setName("StructuredOption")
         .setFullyQualifiedName("StructuredOption")
@@ -874,13 +886,19 @@ public final class ProtoSchemaParserTest {
         .setName("bar")
         .setTag(1)
         .setDocumentation("")
-        .setOptions(list(new Option("validation.range", new Option("min", 1)),
-            new Option("validation.range", new Option("max", 100)), new Option("default", 20)))
+        .setOptions(list(
+            new Option("validation.range", new Option("min", 1, Option.Source.CUSTOM),
+                Option.Source.CUSTOM),
+            new Option("validation.range", new Option("max", 100, Option.Source.CUSTOM),
+                Option.Source.CUSTOM),
+            new Option("default", 20, Option.Source.BUILTIN)))
         .build();
     assertThat(field.getOptions()).containsOnly( //
-        new Option("validation.range", new Option("min", 1)), //
-        new Option("validation.range", new Option("max", 100)), //
-        new Option("default", 20));
+        new Option("validation.range",
+            new Option("min", 1, Option.Source.CUSTOM), Option.Source.CUSTOM), //
+        new Option("validation.range",
+            new Option("max", 100, Option.Source.CUSTOM), Option.Source.CUSTOM), //
+        new Option("default", 20, Option.Source.BUILTIN));
 
     Type expected = new MessageType.Builder().setName("Foo")
         .setFullyQualifiedName("Foo")

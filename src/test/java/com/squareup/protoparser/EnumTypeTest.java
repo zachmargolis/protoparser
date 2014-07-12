@@ -44,7 +44,7 @@ public class EnumTypeTest {
     Value one = new Value("ONE", 1, "", NO_OPTIONS);
     Value two = new Value("TWO", 2, "", NO_OPTIONS);
     Value six = new Value("SIX", 6, "", NO_OPTIONS);
-    Option kitKat = new Option("kit", "kat");
+    Option kitKat = new Option("kit", "kat", Option.Source.BUILTIN);
     EnumType type = new EnumType.Builder().setName("Enum")
         .setFullyQualifiedName("")
         .setDocumentation("")
@@ -97,7 +97,7 @@ public class EnumTypeTest {
   }
 
   @Test public void fieldWithOptions() {
-    Value value = new Value("NAME", 1, "", list(new Option("kit", "kat")));
+    Value value = new Value("NAME", 1, "", list(new Option("kit", "kat", Option.Source.BUILTIN)));
     String expected = "NAME = 1 [\n"
         + "  kit = \"kat\"\n"
         + "];\n";
@@ -121,7 +121,7 @@ public class EnumTypeTest {
   }
 
   @Test public void duplicateValueTagWithAllowAlias() {
-    Option option1 = new Option("allow_alias", true);
+    Option option1 = new Option("allow_alias", true, Option.Source.BUILTIN);
     Value value1 = new Value("VALUE1", 1, "", NO_OPTIONS);
     Value value2 = new Value("VALUE2", 1, "", NO_OPTIONS);
     EnumType type = new EnumType.Builder().setName("Enum1")

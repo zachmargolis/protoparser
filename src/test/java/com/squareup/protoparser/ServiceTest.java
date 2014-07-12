@@ -50,7 +50,7 @@ public class ServiceTest {
     Service service = new Service.Builder().setName("Service")
         .setFullyQualifiedName("")
         .setDocumentation("")
-        .setOptions(list(new Option("foo", "bar")))
+        .setOptions(list(new Option("foo", "bar", Option.Source.BUILTIN)))
         .setMethods(list(method))
         .build();
     String expected = ""
@@ -134,7 +134,7 @@ public class ServiceTest {
             .setDocumentation("")
             .setRequestType("RequestType")
             .setResponseType("ResponseType")
-            .setOptions(list(new Option("foo", "bar")))
+            .setOptions(list(new Option("foo", "bar", Option.Source.BUILTIN)))
             .build();
     String expected = ""
         + "rpc Name (RequestType) returns (ResponseType) {\n"
