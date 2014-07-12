@@ -218,7 +218,7 @@ public final class EnumType implements Type {
       this.options = unmodifiableList(new ArrayList<Option>(options));
     }
 
-    /** Used to represent enums values where we just know the name */
+    /** Used to represent enums values where we just know the name. */
     static Value anonymous(String name) {
       return new Value(name, UNKNOWN_TAG, "", Collections.<Option>emptyList());
     }

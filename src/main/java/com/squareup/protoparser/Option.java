@@ -105,7 +105,7 @@ public final class Option {
       Option optionValue = (Option) value;
       builder.append('(').append(name).append(").").append(optionValue.toString());
     } else if (value instanceof EnumType.Value) {
-      EnumType.Value enumValue = (EnumType.Value)value;
+      EnumType.Value enumValue = (EnumType.Value) value;
       builder.append(name).append(" = ").append(enumValue.getName());
     } else if (value instanceof List) {
       builder.append(name).append(" = [\n");

@@ -389,7 +389,7 @@ public final class ProtoSchemaParser {
           return true;
         } else if (word.equals("false")) {
           return false;
-        } {
+        } else {
           return EnumType.Value.anonymous(word);
         }
     }
