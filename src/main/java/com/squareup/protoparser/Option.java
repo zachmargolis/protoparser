@@ -65,13 +65,21 @@ public final class Option {
 
   private final String name;
   private final Object value;
+  private final Source source;
 
-  public Option(String name, Object value) {
+  enum Source {
+    BUILTIN,
+    CUSTOM,
+  }
+
+  public Option(String name, Object value, Source source) {
     if (name == null) throw new NullPointerException("name");
     if (value == null) throw new NullPointerException("value");
+    if (source == null) throw new NullPointerException("source");
 
     this.name = name;
     this.value = value;
+    this.source = source;
   }
 
   public String getName() {
@@ -87,28 +95,30 @@ public final class Option {
     if (!(other instanceof Option)) return false;
 
     Option that = (Option) other;
-    return name.equals(that.name) && value.equals(that.value);
+    return name.equals(that.name) && value.equals(that.value) && source.equals(that.source);
   }
 
   @Override public int hashCode() {
-    return name.hashCode() + (37 * value.hashCode());
+    return name.hashCode() + (37 * value.hashCode()) + (37 * source.hashCode());
   }
 
   @Override public String toString() {
     StringBuilder builder = new StringBuilder();
     if (value instanceof Boolean || value instanceof Number) {
-      builder.append(name).append(" = ").append(value);
+      builder.append(formatName()).append(" = ").append(value);
     } else if (value instanceof String) {
       String stringValue = (String) value;
-      builder.append(name).append(" = \"").append(escape(stringValue)).append('"');
+      builder.append(formatName()).append(" = \"").append(escape(stringValue)).append('"');
     } else if (value instanceof Option) {
       Option optionValue = (Option) value;
+      // Treat nested options as built-in so they don't get double parens
+      optionValue = new Option(optionValue.name, optionValue.value, Source.BUILTIN);
       builder.append('(').append(name).append(").").append(optionValue.toString());
     } else if (value instanceof EnumType.Value) {
       EnumType.Value enumValue = (EnumType.Value) value;
-      builder.append(name).append(" = ").append(enumValue.getName());
+      builder.append(formatName()).append(" = ").append(enumValue.getName());
     } else if (value instanceof List) {
-      builder.append(name).append(" = [\n");
+      builder.append(formatName()).append(" = [\n");
       //noinspection unchecked
       List<Option> optionList = (List<Option>) value;
       for (int i = 0, count = optionList.size(); i < count; i++) {
@@ -132,5 +142,13 @@ public final class Option {
         .replace("\"", "\\\"")
         .replace("\r", "\\r")
         .replace("\n", "\\n");
+  }
+
+  private String formatName() {
+    if (source == Source.CUSTOM) {
+      return '(' + name + ')';
+    } else {
+      return name;
+    }
   }
 }

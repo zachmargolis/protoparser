@@ -213,7 +213,7 @@ public class ProtoFileTest {
         .setExtensions(NO_EXTENSIONS)
         .setOptions(NO_OPTIONS)
         .build();
-    Option option = new Option("kit", "kat");
+    Option option = new Option("kit", "kat", Option.Source.BUILTIN);
     ProtoFile file =
         new ProtoFile.Builder().setFileName("file.proto")
             .setPackageName(null)
@@ -295,8 +295,8 @@ public class ProtoFileTest {
             .setDocumentation("")
             .setFields(NO_FIELDS)
             .build();
-    Option option1 = new Option("kit", "kat");
-    Option option2 = new Option("foo", "bar");
+    Option option1 = new Option("kit", "kat", Option.Source.BUILTIN);
+    Option option2 = new Option("foo", "bar", Option.Source.BUILTIN);
     Service service1 =
         new Service.Builder().setName("Service1")
             .setFullyQualifiedName("example.simple.Service1")
